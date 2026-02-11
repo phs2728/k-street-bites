@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Street Bites - 사업계획서</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --gold: #f4a261;
+            --light: #f8f9fa;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --text: #333;
+            --text-light: #666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.8;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 네비게이션 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+        }
+        
+        .nav-logo span {
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        .nav-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: white;
+            background: var(--accent);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 히어로 섹션 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .hero h1 span {
+            color: var(--accent);
+        }
+        
+        .hero .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .hero .tagline {
+            display: inline-block;
+            background: var(--accent);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .hero-kpi {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-kpi-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 150px;
+        }
+        
+        .hero-kpi-item .value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+        
+        .hero-kpi-item .label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 공통 섹션 스타일 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .section {
+            padding: 80px 20px;
+        }
+        
+        .section:nth-child(even) {
+            background: white;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 20px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 카드 & 그리드 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+        
+        .card h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 테이블 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        tr:hover {
+            background: #f0f0f5;
+        }
+        
+        .highlight-row {
+            background: #fff3cd !important;
+            font-weight: 600;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 차트 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .chart-box {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-box h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 콘텐츠 블록 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .content-block {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .content-block h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .content-block p {
+            margin-bottom: 15px;
+        }
+        
+        .content-block ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .content-block li {
+            margin-bottom: 8px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* 특수 컴포넌트 */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .quote-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .quote-box p {
+            font-size: 20px;
+            font-weight: 500;
+            font-style: italic;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, var(--accent), #c23a51);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning);
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid var(--success);
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        /* SWOT */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .swot-box {
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .swot-s { background: #d4edda; border-left: 5px solid #28a745; }
+        .swot-w { background: #f8d7da; border-left: 5px solid #dc3545; }
+        .swot-o { background: #cce5ff; border-left: 5px solid #007bff; }
+        .swot-t { background: #fff3cd; border-left: 5px solid #ffc107; }
+        
+        .swot-box h4 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        /* 타임라인 */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 20px 0;
+            padding-left: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-item h4 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-item .period {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        /* 두 열 레이아웃 */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-col, .swot-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 푸터 */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .footer h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        /* 프린트 스타일 */
+        @media print {
+            .nav { display: none; }
+            .section { padding: 40px 20px; }
+            .hero { padding: 60px 20px 40px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 네비게이션 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">K-Street <span>Bites</span></div>
+            <ul class="nav-menu">
+                <li><a href="#summary">요약</a></li>
+                <li><a href="#vision">비전</a></li>
+                <li><a href="#bam">BAM</a></li>
+                <li><a href="#market">시장</a></li>
+                <li><a href="#competition">경쟁</a></li>
+                <li><a href="#marketing">마케팅</a></li>
+                <li><a href="#product">제품</a></li>
+                <li><a href="#finance">재무</a></li>
+                <li><a href="#investment">투자</a></li>
+                <li><a href="#risk">리스크</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 히어로 섹션 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="hero" id="top">
+        <h1>K-Street <span>Bites</span></h1>
+        <p class="subtitle">조지아 트빌리시 한국 분식 배달 + 매장 하이브리드</p>
+        <div class="tagline">✝️ Business As Mission — 탁월한 비즈니스가 곧 최고의 선교</div>
+        
+        <div class="hero-kpi">
+            <div class="hero-kpi-item">
+                <div class="value">$20K</div>
+                <div class="label">총 투자금</div>
+            </div>
+            <div class="hero-kpi-item">
+                <div class="value">$120K</div>
+                <div class="label">Year 1 매출</div>
+            </div>
+            <div class="hero-kpi-item">
+                <div class="value">54건/일</div>
+                <div class="label">BEP 주문</div>
+            </div>
+            <div class="hero-kpi-item">
+                <div class="value">~20개월</div>
+                <div class="label">투자 회수</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 제1장: 경영 요약 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="summary">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2>제1장. 경영 요약</h2>
+                <p>K-Street Bites의 핵심 사업 개요와 왜 이 사업이 성공할 수 있는지를 한눈에 보여드립니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🍡 사업 개요</h3>
+                <p><strong>K-Street Bites</strong>는 조지아 트빌리시에서 한국 분식(떡볶이, 김밥, 라면, 치킨, 핫도그 등)을 중심으로 운영하는 <strong>배달 + 매장 식사 하이브리드 매장</strong>입니다. 매장에서는 치와(ChiWa = 치킨+와인) 컨셉으로 고객단가를 높입니다.</p>
+                <p>이 사업은 단순한 외식업을 넘어, <strong>Business As Mission (BAM)</strong> — 비즈니스를 통한 선교 — 의 철학 위에 세워집니다. 탁월한 비즈니스 운영 자체가 가장 효과적인 선교 도구라고 믿습니다.</p>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>내용</th></tr>
+                        <tr><td><strong>사업명</strong></td><td>K-Street Bites</td></tr>
+                        <tr><td><strong>사업 형태</strong></td><td>LLC (투자 구조 적용) / IE 병행 검토</td></tr>
+                        <tr><td><strong>소재지</strong></td><td>Tbilisi, Saburtalo 또는 Vake 지역</td></tr>
+                        <tr><td><strong>사업 영역</strong></td><td>B2C 배달(70%) + 매장 식사(20%) + B2B 떡 공급(10%)</td></tr>
+                        <tr><td><strong>총 투자금</strong></td><td><strong>20,000 USD</strong></td></tr>
+                        <tr><td><strong>월 운영비</strong></td><td>8,500 USD (대표 급여 3,000 USD 포함)</td></tr>
+                        <tr><td><strong>1차년도 매출 목표</strong></td><td>145,000 USD</td></tr>
+                        <tr><td><strong>손익분기점</strong></td><td>월 9,700 USD (개업 2~3개월 내 달성)</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🎯 핵심 성공 요인 (USP)</h3>
+                <p>K-Street Bites가 경쟁사와 차별화되고 성공할 수 있는 핵심 요인들입니다:</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><span class="card-icon">🍡</span> 자체 떡 생산</h3>
+                        <p>이미 보유한 가래떡 기계로 신선한 떡을 직접 제조합니다. 이는 원가 절감과 동시에 <strong>트빌리시에서 유일한 차별화 포인트</strong>가 됩니다. 경쟁사가 쉽게 모방할 수 없는 기술 장벽입니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">🇰🇷</span> K-Food 트렌드</h3>
+                        <p>조지아 내 K-Pop/K-Drama 인기가 급상승하고 있습니다. K-Pop Area 매장, TRENDZ 콘서트 등 한류 팬덤이 활발하며, 이들이 <strong>한국 음식에 대한 강한 수요</strong>를 형성합니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">💰</span> 안정적 운영자금</h3>
+                        <p>20,000 USD 중 10,000 USD를 운영 안전자금으로 확보합니다. 이 자금은 <strong>"안 쓰는 것이 목표"</strong>인 보험 성격의 자금으로, BEP 달성 전까지 안정적 운영이 가능합니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">✝️</span> BAM 사명</h3>
+                        <p>선교적 동기가 사업의 지속성과 진정성을 강화합니다. 어려울 때 "돈이 안 되니 그만두자"가 아니라 <strong>"사명이니 방법을 찾자"</strong>로 이어집니다. 이것이 포기하지 않는 힘입니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>💵 왜 20,000 USD인가?</h3>
+                <p>투자금을 어떻게 배분하는지가 사업의 생존율을 결정합니다. 저희는 <strong>시설투자 최소화 + 운영 안전자금 확보</strong> 전략을 택했습니다.</p>
+                
+                <div class="chart-grid">
+                    <div class="chart-box">
+                        <h3>투자금 배분</h3>
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>시설 투자 상세 (~$10,000)</h3>
+                        <canvas id="capexChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ 운영 안전자금 $10,000의 철학</strong><br>
+                    이 돈은 "쓸 돈"이 아니라 <strong>"보험"</strong>입니다. 만약을 위한 안전망이지, 예산이 아닙니다.<br>
+                    <strong>목표: 손대지 않고 매출로 운영하기</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 제2장: 비전·미션·전략 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="vision">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>제2장. 비전·미션·전략</h2>
+                <p>K-Street Bites가 어디로 가고, 왜 이 사업을 하며, 어떻게 목표를 달성할 것인지 명확히 합니다.</p>
+            </div>
+            
+            <div class="quote-box">
+                <p>"트빌리시에서 가장 사랑받는 한국 음식 배달 + 매장 브랜드가 되어,<br>
+                탁월한 비즈니스를 통해 하나님의 사랑과 한국 문화의 맛있는 교류를 만든다."</p>
+                <div style="margin-top: 15px; font-size: 14px; opacity: 0.9;">— K-Street Bites 비전</div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🧭 5대 핵심 질문</h3>
+                <p>사업의 본질을 정의하는 다섯 가지 핵심 질문에 대한 답변입니다:</p>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th style="width: 25%;">질문</th><th>답변</th></tr>
+                        <tr>
+                            <td><strong>나는 누구인가?</strong></td>
+                            <td>한국 분식의 맛과 문화를 조지아에 전달하는 K-Food BAM 브랜드</td>
+                        </tr>
+                        <tr>
+                            <td><strong>어디로 가는가?</strong></td>
+                            <td>3년 내 트빌리시 No.1 한국 배달+매장 음식 브랜드 → 5년 내 BAM 모델 복제</td>
+                        </tr>
+                        <tr>
+                            <td><strong>왜 이 사업인가?</strong></td>
+                            <td>자체 떡 제조 기술 + K-Food 트렌드 + 조지아 시장 성장성 + 선교적 소명</td>
+                        </tr>
+                        <tr>
+                            <td><strong>어떻게 돈을 버는가?</strong></td>
+                            <td>B2C 배달(70%) + 매장 치와 세트(20%) + B2B 떡 납품(10%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>왜 우리 팀인가?</strong></td>
+                            <td>터키 외식 창업 경험 + 외식창업 전공 + 조리 자격 + BAM 동역자 팀</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 Business Model Canvas (BMC)</h3>
+                <p>9개 핵심 요소로 비즈니스 모델을 시각화합니다:</p>
+                
+                <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <h3>👥 고객 세그먼트</h3>
+                        <p>• K-Culture 팬 (18~35세 여성)<br>• 이국적 음식 탐험가 (25~40대)<br>• 외국인 거주자/관광객<br>• B2B 거래처 (카페, 레스토랑)</p>
+                    </div>
+                    <div class="card">
+                        <h3>💎 가치 제안</h3>
+                        <p>점심은 한국 도시락, 저녁은 이중튀김 치킨, 종일 생떡 분식을 <strong>18~28 GEL 가격대</strong>에 <strong>30분 내 배달</strong> + KFC보다 30% 저렴</p>
+                    </div>
+                    <div class="card">
+                        <h3>📢 채널</h3>
+                        <p>• Glovo/Wolt 배달 앱 (주력)<br>• 🍷 매장 식사 (치와 컨셉)<br>• Facebook 페이지 + Messenger 직접 주문<br>• Telegram 단골 채널<br>• Instagram/YouTube/TikTok</p>
+                    </div>
+                    <div class="card">
+                        <h3>💰 수익원</h3>
+                        <p>• 배달 (도시락+치킨+분식) — 70%<br>• 🍷 매장 식사 (치와 세트) — 20%<br>• B2B 떡 납품 — 10%</p>
+                    </div>
+                    <div class="card">
+                        <h3>🔧 핵심 자원</h3>
+                        <p>• 가래떡 기계 (보유)<br>• 한국 조리 기술/레시피<br>• 현지 공급망<br>• BAM 동역자 네트워크</p>
+                    </div>
+                    <div class="card">
+                        <h3>🤝 핵심 파트너</h3>
+                        <p>• Glovo/Wolt (배달)<br>• 현지/한국 식재료 공급업체<br>• B2B 거래처<br>• BAM 투자 동역자</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🏆 VRIO 분석 — 핵심 역량</h3>
+                <p>어떤 역량이 지속 가능한 경쟁우위를 제공하는지 분석합니다:</p>
+                
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>역량/자원</th>
+                            <th style="text-align: center;">V (가치)</th>
+                            <th style="text-align: center;">R (희소)</th>
+                            <th style="text-align: center;">I (모방난이도)</th>
+                            <th style="text-align: center;">O (조직화)</th>
+                            <th>경쟁우위</th>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>생떡 직접 제조 기술</strong></td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td><strong>지속적 경쟁우위</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>BAM 사명 기반 동기</strong></td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td><strong>지속적 경쟁우위</strong></td>
+                        </tr>
+                        <tr>
+                            <td>창업자 외식 경력</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">—</td>
+                            <td>잠재 우위</td>
+                        </tr>
+                        <tr>
+                            <td>K-Food 브랜딩</td>
+                            <td style="text-align: center;">✅</td>
+                            <td style="text-align: center;">—</td>
+                            <td style="text-align: center;">—</td>
+                            <td style="text-align: center;">—</td>
+                            <td>경쟁 균등</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="success-box">
+                    <strong>💡 핵심 판단:</strong> <strong>생떡 직접 제조 기술</strong>과 <strong>BAM 사명 기반 동기</strong>가 두 가지 지속 가능한 경쟁우위입니다. 특히 BAM 사명은 단순 수익 동기보다 강한 "포기하지 않는 힘"을 제공합니다.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 제3장: BAM 비즈니스 선교 전략 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="bam">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">✝️</div>
+                <h2>제3장. BAM — 비즈니스 선교 전략</h2>
+                <p>Business As Mission은 비즈니스 자체를 선교의 도구로 사용하는 것입니다. 대충 하는 사업이 아닌, 탁월한 비즈니스가 곧 최고의 설교입니다.</p>
+            </div>
+            
+            <div class="quote-box">
+                <p>"대충 하는 비즈니스는 BAM이 아니다.<br>
+                <strong>탁월한 비즈니스가 곧 최고의 설교다.</strong>"</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🎯 건강한 BAM의 4대 원칙</h3>
+                <p>K-Street Bites는 다음 4가지 원칙을 사업 운영에 통합합니다:</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><span class="card-icon">💪</span> 탁월함 (Excellence)</h3>
+                        <p>선교라서 대충이 아니라, <strong>선교이기에 더 탁월하게</strong>. 최고 품질의 한국 음식과 최상의 서비스를 제공합니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">💰</span> 지속가능성</h3>
+                        <p>수익 없는 선교 사업은 결국 닫힙니다. <strong>흑자 경영이 사명의 전제 조건</strong>입니다. 지속되어야 선교도 지속됩니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">🔗</span> 통합성 (Integration)</h3>
+                        <p>사업과 선교가 분리되지 않습니다. 사업 따로, 전도 따로가 아니라 <strong>사업 운영 자체가 선교 활동</strong>입니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">🌱</span> 변혁 (Transformation)</h3>
+                        <p>개인·기업·지역사회의 총체적 변화를 추구합니다. 직원, 고객, 지역사회에 <strong>긍정적 영향</strong>을 미칩니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 Quadruple Bottom Line — 4중 성과 측정</h3>
+                <p>일반 사업이 Financial 수익만 측정한다면, BAM은 4가지를 동시에 측정합니다:</p>
+                
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Bottom Line</th>
+                            <th>측정 영역</th>
+                            <th>K-Street Bites KPI</th>
+                        </tr>
+                        <tr>
+                            <td><strong>💵 Financial</strong> (경제적)</td>
+                            <td>사업 수익성</td>
+                            <td>순이익, ROI, 현금흐름</td>
+                        </tr>
+                        <tr>
+                            <td><strong>👥 Social</strong> (사회적)</td>
+                            <td>사회적 영향</td>
+                            <td>공정 임금 지급, 직원 복지, 지역 고용</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🌍 Environmental</strong> (환경적)</td>
+                            <td>환경 책임</td>
+                            <td>음식물 폐기 최소화, 친환경 포장 전환</td>
+                        </tr>
+                        <tr>
+                            <td><strong>✨ Spiritual</strong> (영적)</td>
+                            <td>영적 영향</td>
+                            <td>관계 형성 수, 삶의 변화 사례, 교회 연결</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🤝 BAM 실행 전략</h3>
+                
+                <div class="two-col">
+                    <div>
+                        <h4 style="color: var(--accent); margin-bottom: 15px;">👨‍🍳 직원을 통한 사역</h4>
+                        <ul>
+                            <li><strong>공정 임금:</strong> 시장 평균 이상 급여 (현지 평균 400 → 400~450 USD)</li>
+                            <li><strong>존중의 문화:</strong> 직원을 "인건비"가 아닌 "함께하는 사람"으로 대우</li>
+                            <li><strong>섬기는 리더십:</strong> 대표가 가장 힘든 일도 함께</li>
+                            <li><strong>관계 형성:</strong> 정기적 대화, 고민 상담, 생일 축하</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent); margin-bottom: 15px;">🍽️ 고객을 통한 사역</h4>
+                        <ul>
+                            <li><strong>섬김의 서비스:</strong> "잘 먹기를 바라는 마음"으로 음식 제공</li>
+                            <li><strong>진심 어린 소통:</strong> 리뷰에 진심으로 답변, 클레임 과잉 보상</li>
+                            <li><strong>문화 교류:</strong> 음식을 통한 한국-조지아 문화 교류</li>
+                            <li><strong>단골 관계:</strong> 이름 기억, 취향 기록, 안부 묻기</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h4 style="color: var(--accent); margin-bottom: 15px;">🏘️ 지역사회를 통한 사역</h4>
+                    <div class="table-container">
+                        <table>
+                            <tr><th>실행 항목</th><th>구체적 내용</th><th>시작 시기</th></tr>
+                            <tr><td>나눔 식사</td><td>월 1회 소외 이웃에게 무료 도시락 제공 (10~20인분)</td><td>Month 6~</td></tr>
+                            <tr><td>명절 이벤트</td><td>추석/설날 한국 명절에 떡 나눔 행사</td><td>연 2회</td></tr>
+                            <tr><td>지역 행사 참여</td><td>트빌리시 지역 축제, 바자 등 참여</td><td>기회 시</td></tr>
+                            <tr><td>현지 교회 연결</td><td>현지 개신교 교회 교류, 한인 교회 네트워크</td><td>Month 1~</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>🙏 건강한 BAM을 위해 혼자 하지 않습니다</h4>
+                <p>투자자가 단순 자금 제공자가 아니라 <strong>팀으로 함께하는 선교 동역자</strong>가 될 때, 사업의 선교적 목적이 더 강화되고 지속됩니다. 기도 동역 + 전략 자문 + 월간 리포트 공유를 통해 함께 사역합니다.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 제4장: 시장 환경 분석 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="market">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>제4장. 시장 환경 분석</h2>
+                <p>조지아 트빌리시 시장의 기회와 환경을 PEST, 3C, TAM/SAM/SOM 프레임워크로 분석합니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🌍 PEST 분석 — 거시 환경</h3>
+                <p>조지아의 정치, 경제, 사회, 기술 환경을 분석하여 사업 기회와 리스크를 파악합니다.</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><span class="card-icon">🏛️</span> Political (정치)</h3>
+                        <p>• <strong>EU 가입 추진:</strong> 후보국 지위 획득, 규제 투명성 증가<br>
+                        • <strong>외국인 투자 정책:</strong> 외국인 100% 소유 가능, 사업 등록 1일 소요<br>
+                        • <strong>Small Business Status:</strong> 연매출 500,000 GEL 이하 시 <strong>1% 세율</strong></p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">💰</span> Economic (경제)</h3>
+                        <p>• <strong>GDP 성장률:</strong> 2025년 7.5%, 2026년 5.0~5.5% (ADB)<br>
+                        • <strong>1인당 GDP:</strong> 약 8,200 USD<br>
+                        • <strong>관광객:</strong> 2024년 700만 명+ 방문<br>
+                        • <strong>환율:</strong> 1 USD ≈ 2.77 GEL</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">👥</span> Social (사회)</h3>
+                        <p>• <strong>트빌리시 인구:</strong> 약 1,090,000명<br>
+                        • <strong>젊은 층(15~34세):</strong> 약 30% (327,000명)<br>
+                        • <strong>K-Culture 인기:</strong> K-Pop Area 매장, TRENDZ 콘서트 활발<br>
+                        • <strong>배달 문화:</strong> Glovo/Wolt 보급 확대</p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">💻</span> Technology (기술)</h3>
+                        <p>• <strong>배달 플랫폼:</strong> Glovo(1위), Wolt(2위), Bolt Food<br>
+                        • <strong>모바일 결제:</strong> 카드 결제 보편화<br>
+                        • <strong>인터넷 보급률:</strong> 도시 90%+</p>
+                    </div>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✅ PEST 종합 평가:</strong> 외국인 친화적 정책(1% 세율), 경제 성장(5%+), K-Culture 열풍, 배달 인프라 완비 — <strong>사업 환경이 매우 우호적</strong>입니다.
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📈 TAM / SAM / SOM — 시장 규모</h3>
+                <p>전체 시장에서 실제로 우리가 공략할 수 있는 시장 규모를 단계별로 산출합니다.</p>
+                
+                <div class="chart-grid">
+                    <div class="chart-box">
+                        <h3>시장 규모 비교</h3>
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                    <div>
+                        <table>
+                            <tr><th>구분</th><th>산출 근거</th><th style="text-align: right;">규모</th></tr>
+                            <tr>
+                                <td><strong>TAM</strong><br>(전체 시장)</td>
+                                <td>트빌리시 외식 시장<br>(인구 109만 × 월 외식비 200 GEL × 12개월)</td>
+                                <td style="text-align: right; font-weight: 700;">~$94M</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SAM</strong><br>(유효 시장)</td>
+                                <td>배달 음식 시장(15%) × 아시안/한식 선호층(20%)</td>
+                                <td style="text-align: right; font-weight: 700;">~$2.8M</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>SOM</strong><br>(목표 시장)</td>
+                                <td>SAM의 3~5% (현실적 1차년도 점유율)</td>
+                                <td style="text-align: right; font-weight: 700;">$84K~$145K</td>
+                            </tr>
+                        </table>
+                        <p style="margin-top: 15px; font-size: 14px;">
+                            <strong>1차년도 목표:</strong> SOM 기준 약 <strong>$145,000</strong> 매출 달성
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>👥 타겟 고객 페르소나</h3>
+                <p>우리의 핵심 고객이 누구인지 구체적으로 정의합니다:</p>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>🎵 니노 (Nino) — K-Culture 팬</h3>
+                        <p><strong>22세 여성, 대학생</strong><br><br>
+                        K-Drama/K-Pop 열성 팬이며 Instagram을 활발히 사용합니다. 한국 드라마에서 본 음식을 직접 맛보고 싶어하며, 친구와 함께 주 1~2회 주문합니다.<br><br>
+                        <strong>평균 주문:</strong> 25 GEL<br>
+                        <strong>채널:</strong> Instagram 발견 → Glovo 주문</p>
+                    </div>
+                    <div class="card">
+                        <h3>🍽️ 기오르기 (Giorgi) — 음식 탐험가</h3>
+                        <p><strong>32세 남성, IT 직장인</strong><br><br>
+                        새로운 음식 탐험을 좋아하며 리뷰 작성을 활발히 합니다. 트빌리시에서 새롭고 맛있는 음식 경험을 원합니다.<br><br>
+                        <strong>평균 주문:</strong> 30 GEL<br>
+                        <strong>주문 패턴:</strong> 주 1회, 저녁 시간대</p>
+                    </div>
+                    <div class="card">
+                        <h3>🌍 알렉스 (Alex) — 디지털 노마드</h3>
+                        <p><strong>28세, 외국인 거주자/관광객</strong><br><br>
+                        아시안 음식에 친숙하며 배달 서비스를 적극 활용합니다. 익숙한 아시안 맛과 빠르고 편리한 배달을 원합니다.<br><br>
+                        <strong>평균 주문:</strong> 20 GEL<br>
+                        <strong>주문 패턴:</strong> 주 2~3회</p>
+                    </div>
+                    <div class="card">
+                        <h3>☕ 타마르 (Tamar) — B2B 거래처</h3>
+                        <p><strong>카페/디저트 가게 운영자</strong><br><br>
+                        독특한 디저트 메뉴로 차별화하고 싶어하며, 안정적인 떡 공급을 원합니다. 한국 떡을 활용한 신메뉴 개발에 관심이 있습니다.<br><br>
+                        <strong>거래 패턴:</strong> 주 2회 정기 주문<br>
+                        <strong>건당 금액:</strong> 50~100 GEL</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 제5장: 경쟁 분석 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="competition">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">⚔️</div>
+                <h2>제5장. 경쟁 분석</h2>
+                <p>Porter's 5 Forces와 SWOT 분석을 통해 경쟁 환경을 이해하고 차별화 전략을 수립합니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🔍 Porter's 5 Forces 분석</h3>
+                <p>산업 경쟁 강도를 5가지 힘으로 분석합니다:</p>
+                
+                <div class="chart-grid">
+                    <div class="chart-box">
+                        <h3>5 Forces 위협 수준</h3>
+                        <canvas id="porterChart"></canvas>
+                    </div>
+                    <div>
+                        <table>
+                            <tr><th>Force</th><th style="text-align: center;">위협</th><th>대응 전략</th></tr>
+                            <tr>
+                                <td>기존 경쟁</td>
+                                <td style="text-align: center;">⭐⭐⭐</td>
+                                <td>배달 특화 + 가격 경쟁력</td>
+                            </tr>
+                            <tr>
+                                <td>신규 진입</td>
+                                <td style="text-align: center;">⭐⭐⭐⭐</td>
+                                <td>자체 떡 생산 기술 장벽</td>
+                            </tr>
+                            <tr>
+                                <td>대체재</td>
+                                <td style="text-align: center;">⭐⭐⭐</td>
+                                <td>K-Culture 연계 마케팅</td>
+                            </tr>
+                            <tr>
+                                <td>공급자 교섭력</td>
+                                <td style="text-align: center;">⭐⭐⭐</td>
+                                <td>현지 재료 비율 극대화</td>
+                            </tr>
+                            <tr>
+                                <td>구매자 교섭력</td>
+                                <td style="text-align: center;">⭐⭐⭐⭐</td>
+                                <td>18 GEL 가격 정책 + 품질</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 SWOT 분석</h3>
+                <p>내부 강점/약점과 외부 기회/위협을 종합 분석합니다:</p>
+                
+                <div class="swot-grid">
+                    <div class="swot-box swot-s">
+                        <h4>💪 강점 (Strengths)</h4>
+                        <ul>
+                            <li><strong>자체 떡 생산</strong> — 가래떡 기계 보유, 유일한 역량</li>
+                            <li><strong>창업자 외식 경력</strong> — 터키 식당 창업/운영 경험</li>
+                            <li><strong>BAM 사명</strong> — 포기하지 않는 강한 동기</li>
+                            <li><strong>안정적 자금</strong> — 20,000 USD 투자 확보</li>
+                            <li><strong>전문 자격</strong> — 치킨마스터, 핫도그, 커피 과정 수료</li>
+                        </ul>
+                    </div>
+                    <div class="swot-box swot-w">
+                        <h4>⚠️ 약점 (Weaknesses)</h4>
+                        <ul>
+                            <li><strong>초기 브랜드 인지도 부족</strong> — 신규 진입자</li>
+                            <li><strong>조지아 현지 경험 부족</strong> — 첫 조지아 사업</li>
+                            <li><strong>1인 경영 체제</strong> — 리스크 집중</li>
+                            <li><strong>언어 장벽</strong> — 조지아어 미숙</li>
+                        </ul>
+                    </div>
+                    <div class="swot-box swot-o">
+                        <h4>🚀 기회 (Opportunities)</h4>
+                        <ul>
+                            <li><strong>K-Culture 인기 급상승</strong> — K-Pop, K-Drama 팬덤</li>
+                            <li><strong>조지아 경제 성장</strong> — GDP 5%+ 성장</li>
+                            <li><strong>IE 1% 세율 혜택</strong> — 세금 부담 최소</li>
+                            <li><strong>미전도 지역</strong> — BAM 전략적 가치 높음</li>
+                            <li><strong>관광 활성화</strong> — 연 700만 관광객</li>
+                        </ul>
+                    </div>
+                    <div class="swot-box swot-t">
+                        <h4>🔥 위협 (Threats)</h4>
+                        <ul>
+                            <li><strong>원재료 가격 변동</strong> — 환율/인플레이션 영향</li>
+                            <li><strong>배달 플랫폼 수수료</strong> — 인상 가능성</li>
+                            <li><strong>경쟁사 진입</strong> — 진입 장벽 낮음</li>
+                            <li><strong>환율 급변동</strong> — GEL/USD 리스크</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🎯 경쟁 포지셔닝</h3>
+                <p>트빌리시 시장에서 K-Street Bites의 포지셔닝입니다:</p>
+                
+                <div class="highlight-box">
+                    <p style="font-size: 18px; text-align: center;">
+                        "K-Street Bites는 <strong>트빌리시에서 유일하게 직접 뽑는 생떡으로 만든 정통 한국 분식</strong>을<br>
+                        <strong>18 GEL</strong>이라는 합리적 가격에 <strong>30분 이내 배달</strong>하는,<br>
+                        한국 거리 음식의 진짜 맛을 전하는 브랜드이다."
+                    </p>
+                </div>
+                
+                <p style="margin-top: 20px;"><strong>핵심 차별화 포인트:</strong></p>
+                <ul>
+                    <li>대부분의 한식당이 오프라인 매장 중심 → 우리는 <strong>배달 특화</strong></li>
+                    <li>수입 떡 사용 또는 떡 메뉴 없음 → 우리는 <strong>직접 떡 생산</strong></li>
+                    <li>높은 가격대 → 우리는 <strong>18 GEL 현지인 가격</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 계속... (마케팅, 제품, 재무 등 추가 섹션) -->
+    <!-- 길이 제한으로 인해 다음 파일에서 계속 -->
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 차트 스크립트 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        // 투자금 배분 차트
+        new Chart(document.getElementById('investmentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['시설 투자 (~$10K)', '운영 안전자금 ($10K)'],
+                datasets: [{
+                    data: [10000, 10000],
+                    backgroundColor: ['#e94560', '#2ecc71'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+        
+        // CAPEX 상세 차트
+        new Chart(document.getElementById('capexChart'), {
+            type: 'bar',
+            data: {
+                labels: ['임대', '재료', '마케팅', '주방설비', '예비비', 'POS/IT', '인테리어', '등록'],
+                datasets: [{
+                    label: 'USD',
+                    data: [2000, 2000, 2000, 1500, 1000, 800, 500, 200],
+                    backgroundColor: '#e94560'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+        
+        // 시장 규모 차트
+        new Chart(document.getElementById('marketChart'), {
+            type: 'bar',
+            data: {
+                labels: ['TAM', 'SAM', 'SOM (Year 1)'],
+                datasets: [{
+                    label: 'USD',
+                    data: [94000000, 2800000, 119556],
+                    backgroundColor: ['#1a1a2e', '#e94560', '#f4a261']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { type: 'logarithmic' } }
+            }
+        });
+        
+        // Porter 5 Forces 차트
+        new Chart(document.getElementById('porterChart'), {
+            type: 'radar',
+            data: {
+                labels: ['기존 경쟁', '신규 진입', '대체재', '공급자', '구매자'],
+                datasets: [{
+                    label: '위협 수준',
+                    data: [3, 4, 3, 3, 4],
+                    backgroundColor: 'rgba(233, 69, 96, 0.3)',
+                    borderColor: '#e94560',
+                    pointBackgroundColor: '#e94560'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { r: { min: 0, max: 5 } }
+            }
+        });
+    </script>
+    
+    <!-- 페이지 하단 안내 -->
+    <div style="text-align: center; padding: 50px 20px; background: #f0f0f5;">
+        <p style="color: #666; font-size: 14px;">
+            📄 이 페이지는 전체 사업계획서의 1부입니다.<br>
+            <a href="website-part2.html" style="color: var(--accent);">2부 보기: 마케팅, 제품, 재무, 투자 제안 →</a>
+        </p>
+    </div>
+    
+</body>
+</html>

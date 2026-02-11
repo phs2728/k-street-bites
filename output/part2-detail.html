@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Street Bites - Part 2 상세계획</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --gold: #f4a261;
+            --light: #f8f9fa;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --text: #333;
+            --text-light: #666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.8;
+        }
+        
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .nav-logo span {
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+        
+        .nav-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: white;
+            background: var(--accent);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .hero h1 span {
+            color: var(--accent);
+        }
+        
+        .section {
+            padding: 80px 20px;
+        }
+        
+        .section:nth-child(even) {
+            background: white;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            font-size: 16px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 20px;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+        
+        .card h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        tr:hover {
+            background: #f0f0f5;
+        }
+        
+        .highlight-row {
+            background: #fff3cd !important;
+            font-weight: 600;
+        }
+        
+        .menu-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px;
+        }
+        
+        .menu-card .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 10px;
+        }
+        
+        .content-block {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .content-block h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .content-block h4 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .content-block p {
+            margin-bottom: 15px;
+        }
+        
+        .content-block ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .content-block li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, var(--accent), #c23a51);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning);
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid var(--success);
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        
+        .risk-matrix {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .risk-matrix th,
+        .risk-matrix td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding: 20px 0;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-item h4 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-item .period {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .footer h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 30px 20px;
+            background: #f0f0f5;
+        }
+        
+        .nav-buttons a {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-buttons a.prev {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .nav-buttons a.prev:hover {
+            background: var(--accent);
+        }
+        
+        .nav-buttons a.home {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .nav-buttons a.home:hover {
+            background: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">K-Street <span>Bites</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="part1-detail.html">Part 1</a></li>
+                <li><a href="#marketing">마케팅</a></li>
+                <li><a href="#product">제품</a></li>
+                <li><a href="#operations">운영</a></li>
+                <li><a href="#finance">재무</a></li>
+                <li><a href="#investment">투자</a></li>
+                <li><a href="#risk">리스크</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <h1>K-Street <span>Bites</span></h1>
+        <p style="font-size: 18px; margin: 20px 0;">조지아 트빌리시 한국 분식 배달 + 매장 사업계획서</p>
+        <p style="opacity: 0.9;">Part 2: 마케팅 ~ 리스크 관리</p>
+    </section>
+    
+    <!-- 마케팅 -->
+    <section class="section" id="marketing">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">📢</div>
+                <h2>제6장. 마케팅 전략</h2>
+                <p>STP 전략부터 실행 채널까지 상세 마케팅 계획입니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🎯 STP 전략</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th width="20%">전략</th><th>내용</th></tr>
+                        <tr>
+                            <td><strong>Segmentation</strong></td>
+                            <td>K-문화 팬 (18~35 여성), 음식 탐험가, 외국인, B2B 거래처</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Targeting</strong></td>
+                            <td>1차: K-팬 (20%), 2차: 음식 탐험가 (50%), 3차: 배달 일반 고객 (30%)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Positioning</strong></td>
+                            <td>"직접 뽑은 생떡, 트빌리시에서 가장 신선한 한식"</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>4P 마케팅 믹스</h3>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><span class="card-icon">📦</span> Product</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>시그니처: 생떡 음식</li>
+                            <li>다양한 메뉴</li>
+                            <li>프리미엄 품질</li>
+                            <li>배달 최적화 포장</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">💰</span> Price</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>단품: 15~22 GEL</li>
+                            <li>세트: 25~35 GEL</li>
+                            <li>배달 수수료: 포함</li>
+                            <li>프로모션: 월 1~2회</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">📍</span> Place</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>Glovo 배달앱</li>
+                            <li>Wolt 배달앱</li>
+                            <li>매장 직접 방문</li>
+                            <li>B2B 거래처 배달</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">📣</span> Promotion</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>Facebook 광고</li>
+                            <li>인플루언서 협업</li>
+                            <li>오픈 프로모션</li>
+                            <li>로열티 프로그램</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📱 조지아 SNS 생태계 분석</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>플랫폼</th><th>활성 사용자</th><th>카테고리</th><th>마케팅 활용</th></tr>
+                        <tr>
+                            <td><strong>Facebook</strong></td>
+                            <td>391만 명 (100%+ 침투율)</td>
+                            <td>전 연령층, 비즈니스</td>
+                            <td>타겟 광고, 커뮤니티</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Instagram</strong></td>
+                            <td>180만 명</td>
+                            <td>18~35 젊은층</td>
+                            <td>음식 사진, 해시태그</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TikTok</strong></td>
+                            <td>140만 명</td>
+                            <td>13~25 청소년</td>
+                            <td>바이럴 영상, 트렌드</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YouTube</strong></td>
+                            <td>230만 명</td>
+                            <td>교육, 엔터테인먼트</td>
+                            <td>조리 영상, 가이드</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✅ Facebook 인사이트:</strong> 391만 사용자는 조지아 인구(369만)를 초과! 거의 모든 조지아인이 Facebook 사용. 타겟 광고에 최적화.
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🏪 경쟁자 분석: KFC vs K-Street Bites</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>KFC (기존 경쟁자)</th><th>K-Street Bites (우리)</th></tr>
+                        <tr>
+                            <td><strong>음식</strong></td>
+                            <td>미국식 프라이드 치킨</td>
+                            <td class="highlight-row">정통 한식 + 자체 떡</td>
+                        </tr>
+                        <tr>
+                            <td><strong>신선도</strong></td>
+                            <td>냉동 사용</td>
+                            <td class="highlight-row">신선한 직접 조리</td>
+                        </tr>
+                        <tr>
+                            <td><strong>가격대</strong></td>
+                            <td>25~40 GEL (고가)</td>
+                            <td class="highlight-row">15~22 GEL (저가)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>트렌드</strong></td>
+                            <td>기존 글로벌 브랜드</td>
+                            <td class="highlight-row">K-Culture 상승세</td>
+                        </tr>
+                        <tr>
+                            <td><strong>타겟</strong></td>
+                            <td>패밀리, 젊은층</td>
+                            <td class="highlight-row">K-팬, 음식 탐험가</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 제품 -->
+    <section class="section" id="product">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">🍲</div>
+                <h2>제7장. 제품 & 품질</h2>
+                <p>신선한 우리 떡과 정통 한식 메뉴입니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🌟 시그니처 메뉴</h3>
+                
+                <div class="card-grid">
+                    <div class="menu-card">
+                        <h4>🍡 생떡 볶음</h4>
+                        <p style="font-size: 14px; margin: 10px 0;">직접 뽑은 생떡을 매콤하게</p>
+                        <div class="price">18 GEL</div>
+                    </div>
+                    <div class="menu-card">
+                        <h4>🍢 떡볶이 세트</h4>
+                        <p style="font-size: 14px; margin: 10px 0;">생떡 + 계란 + 어묵</p>
+                        <div class="price">20 GEL</div>
+                    </div>
+                    <div class="menu-card">
+                        <h4>🍗 한식 + 생떡</h4>
+                        <p style="font-size: 14px; margin: 10px 0;">치킨 + 생떡 조합</p>
+                        <div class="price">22 GEL</div>
+                    </div>
+                    <div class="menu-card">
+                        <h4>🍙 점심 도시락</h4>
+                        <p style="font-size: 14px; margin: 10px 0;">밥 + 반찬 + 국</p>
+                        <div class="price">15 GEL</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 메뉴 포트폴리오</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>카테고리</th><th>메뉴 (예시)</th><th>가격대</th><th>매출 비중</th></tr>
+                        <tr>
+                            <td><strong>생떡 메뉴</strong></td>
+                            <td>생떡볶음, 떡볶이, 한식떡</td>
+                            <td>15~22 GEL</td>
+                            <td>50%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>점심 도시락</strong></td>
+                            <td>육개장, 김치찜, 김밥</td>
+                            <td>15~18 GEL</td>
+                            <td>20%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>저녁 치킨</strong></td>
+                            <td>양념 치킨, 간장 치킨</td>
+                            <td>20~25 GEL</td>
+                            <td>20%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>종일 분식</strong></td>
+                            <td>김밥, 순대, 어묵</td>
+                            <td>10~15 GEL</td>
+                            <td>10%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>✅ 품질 관리 시스템</h3>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>원재료 검수</h4>
+                        <p style="font-size: 14px; margin-top: 5px;">신선한 재료만 입고. 공급업체 평가 관리.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>조리 표준화</h4>
+                        <p style="font-size: 14px; margin-top: 5px;">각 메뉴별 조리 레시피 및 온도 기준 준수.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>위생 관리</h4>
+                        <p style="font-size: 14px; margin-top: 5px;">일일 청소, 냉장 온도 기록, 직원 위생교육.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>고객 피드백</h4>
+                        <p style="font-size: 14px; margin-top: 5px;">배달앱 평점 모니터링, 직원 개선 회의.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 운영 -->
+    <section class="section" id="operations">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>제8장. 운영 & 로지스틱스</h2>
+                <p>매장 운영부터 공급망까지 상세 운영 계획입니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>🏪 매장 정보</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>내용</th></tr>
+                        <tr><td><strong>위치</strong></td><td>트빌리시 Saburtalo/Vake 지역 (주택가 근처)</td></tr>
+                        <tr><td><strong>면적</strong></td><td>45~60 m²</td></tr>
+                        <tr><td><strong>레이아웃</strong></td><td>주방(30m²) + 대기실(15m²)</td></tr>
+                        <tr><td><strong>좌석</strong></td><td>4 테이블 × 2인 = 8석 (배달 중심)</td></tr>
+                        <tr><td><strong>설비</strong></td><td>떡 생산기계 + 가스레인지 + 냉장고</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📅 일일 운영 스케줄</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>시간</th><th>활동</th></tr>
+                        <tr><td>08:00 ~ 09:00</td><td>매장 오픈, 떡 생산 시작</td></tr>
+                        <tr><td>09:00 ~ 11:00</td><td>배달 주문 처리, 준비</td></tr>
+                        <tr><td>11:00 ~ 13:00</td><td>점심 시간대 피크</td></tr>
+                        <tr><td>13:00 ~ 17:00</td><td>정리, 저녁 준비</td></tr>
+                        <tr><td>17:00 ~ 21:00</td><td>저녁 피크 (저녁 음식)</td></tr>
+                        <tr><td>21:00 ~ 23:00</td><td>마감, 청소, 정산</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>👥 인력 계획</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>단계</th><th>구성</th><th>월급</th></tr>
+                        <tr>
+                            <td><strong>Phase 1 (초기)</strong></td>
+                            <td>창업자 1명 + 조리보조 2명</td>
+                            <td>$3,500 (총)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 2 (M6+)</strong></td>
+                            <td>창업자 + 조리 2명 + 배달기사 2명</td>
+                            <td>$4,500 (총)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 3 (확장)</strong></td>
+                            <td>매니저 + 조리 3명 + 배달기사 3명 + 배달 관리</td>
+                            <td>$6,000 (총)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🚚 공급망 관리</h3>
+                
+                <div class="two-col">
+                    <div>
+                        <h4>주요 공급처</h4>
+                        <ul>
+                            <li><strong>식재료</strong>: 로컬 시장 + 도매상</li>
+                            <li><strong>포장재</strong>: Georgian supplier</li>
+                            <li><strong>음료</strong>: 지역 유통사</li>
+                            <li><strong>기계 부품</strong>: 서울에서 사전 구입</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>재고 관리 원칙</h4>
+                        <ul>
+                            <li>일일 신선도 관리</li>
+                            <li>매주 1회 발주</li>
+                            <li>3일 분량 재고 보유</li>
+                            <li>JIT (Just In Time) 운영</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🔄 ChiWa 매장 컨셉</h3>
+                
+                <div class="highlight-box">
+                    <h4>Chicken + Wine 하이브리드</h4>
+                    <p style="margin-top: 10px;">배달 수수료 최소화 전략: 일정 기간 후 매장에서 와인/음료를 함께 판매해 매장 식사 비중을 높이고, 배달앱 의존도를 줄임.</p>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🏛️ 조지아 식당 허가 절차</h3>
+                
+                <div class="success-box">
+                    <strong>✅ 중요!</strong> 조지아는 한국과 달리 <strong>식당 면허가 별도로 필요하지 않습니다.</strong> 건물 소유자 허가 + LLC 등록만으로 영업 가능.
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>단계</th><th>절차</th><th>소요 시간</th></tr>
+                        <tr><td>1</td><td>LLC 설립 (세무청 등록)</td><td>3~5일</td></tr>
+                        <tr><td>2</td><td>건물 임차 계약</td><td>1주일</td></tr>
+                        <tr><td>3</td><td>VAT 등록</td><td>1주일</td></tr>
+                        <tr><td>4</td><td>위생 검사 (위생국)</td><td>1회</td></tr>
+                        <tr><td>5</td><td>영업 시작</td><td>즉시</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 재무 -->
+    <section class="section" id="finance">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">💰</div>
+                <h2>제9장. 재무 계획</h2>
+                <p>초기 투자부터 3년 재정 전망까지입니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>💵 초기 투자금 배분 ($20,000)</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>금액</th><th>비중</th></tr>
+                        <tr><td><strong>시설 투자</strong></td><td>$10,000</td><td>50%</td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 떡 생산기계</td><td>$4,500</td><td></td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 주방 설비</td><td>$3,000</td><td></td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 테이블/의자/포장</td><td>$2,500</td><td></td></tr>
+                        <tr><td><strong>운영 자금</strong></td><td>$7,000</td><td>35%</td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 초기 식재료</td><td>$3,500</td><td></td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 임차료 선금 (3개월)</td><td>$2,100</td><td></td></tr>
+                        <tr style="background: #cce5ff;"><td>&nbsp;&nbsp;- 포장재, 광고</td><td>$1,400</td><td></td></tr>
+                        <tr><td><strong>안전자금</strong></td><td>$3,000</td><td>15%</td></tr>
+                        <tr style="background: #f8d7da;"><td>&nbsp;&nbsp;- BEP 도달 전 응급 자금</td><td>$3,000</td><td></td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 월 운영비 분석</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>비목</th><th>월 금액 (GEL)</th><th>월 금액 ($)</th></tr>
+                        <tr><td><strong>인건비</strong></td><td>10,000 GEL</td><td>$3,500</td></tr>
+                        <tr><td><strong>임차료</strong></td><td>700 GEL</td><td>$250</td></tr>
+                        <tr><td><strong>식재료비</strong></td><td>8,000 GEL</td><td>$2,800</td></tr>
+                        <tr><td><strong>배달 수수료</strong></td><td>4,000 GEL</td><td>$1,400</td></tr>
+                        <tr><td><strong>유틸리티 + 기타</strong></td><td>1,500 GEL</td><td>$500</td></tr>
+                        <tr class="highlight-row"><td><strong>합계 월 운영비</strong></td><td>24,200 GEL</td><td>$8,450</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📈 손익분기점(BEP) 분석</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>수치</th></tr>
+                        <tr><td><strong>월 운영비</strong></td><td>$8,450</td></tr>
+                        <tr><td><strong>평균 주문 가격</strong></td><td>$18 (18 GEL)</td></tr>
+                        <tr><td><strong>순이익률</strong></td><td>35% (배달앱 수수료 30% 공제)</td></tr>
+                        <tr class="highlight-row"><td><strong>BEP 월 매출</strong></td><td>$12,209 (약 680건 주문)</td></tr>
+                        <tr class="highlight-row"><td><strong>일 평균 주문</strong></td><td>23건 (30일 기준)</td></tr>
+                    </table>
+                </div>
+                
+                <div class="success-box">
+                    <strong>✅ 달성 가능성:</strong> 1주일 조사 결과 경쟁사 평균 30~40건/일. 우리는 초기 23건부터 시작하여 M5~6에 BEP 달성 예측.
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 3년 재무 전망</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>항목</th>
+                            <th>Year 1</th>
+                            <th>Year 2</th>
+                            <th>Year 3</th>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>연간 매출</strong></td>
+                            <td>$119,556</td>
+                            <td>$273,792</td>
+                            <td>$385,344</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;- 월 평균</td>
+                            <td>$9,963</td>
+                            <td>$22,816</td>
+                            <td>$32,112</td>
+                        </tr>
+                        <tr>
+                            <td><strong>COGS (40%)</strong></td>
+                            <td>$47,822</td>
+                            <td>$109,517</td>
+                            <td>$154,138</td>
+                        </tr>
+                        <tr>
+                            <td><strong>운영비 (연간)</strong></td>
+                            <td>$101,400</td>
+                            <td>$101,400</td>
+                            <td>$108,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>감가상각 ($1,000/년)</strong></td>
+                            <td>$1,000</td>
+                            <td>$1,000</td>
+                            <td>$1,000</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>순이익</strong></td>
+                            <td>-$30,666</td>
+                            <td>$61,875</td>
+                            <td>$122,206</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 투자 구조 -->
+    <section class="section" id="investment">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>제10장. 투자 구조</h2>
+                <p>지분투자 vs 대출: 두 가지 옵션을 비교합니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>💎 옵션 A: 지분 투자 (25% 기준)</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>내용</th></tr>
+                        <tr><td><strong>투자 금액</strong></td><td>$20,000</td></tr>
+                        <tr><td><strong>지분율</strong></td><td>25%</td></tr>
+                        <tr><td><strong>배당 정책</strong></td><td>순이익의 25% (분기 배당)</td></tr>
+                        <tr><td><strong>Year 1 배당</strong></td><td>손실 (-$7,667) → 배당 없음</td></tr>
+                        <tr><td><strong>Year 2 배당</strong></td><td>$15,469 (순이익 $61,875의 25%)</td></tr>
+                        <tr><td><strong>Year 3 배당</strong></td><td>$30,552 (순이익 $122,206의 25%)</td></tr>
+                        <tr><td><strong>누적 배당 (3년)</strong></td><td>$46,021</td></tr>
+                        <tr><td><strong>회수율</strong></td><td>230% (3년 내)</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🏦 옵션 B: 대출 구조</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr><th>항목</th><th>내용</th></tr>
+                        <tr><td><strong>대출 금액</strong></td><td>$20,000</td></tr>
+                        <tr><td><strong>금리</strong></td><td>연 8%</td></tr>
+                        <tr><td><strong>상환 기간</strong></td><td>18~24개월</td></tr>
+                        <tr><td><strong>월 상환액</strong></td><td>$900~$1,100</td></tr>
+                        <tr><td><strong>총 상환액</strong></td><td>$21,600~$22,400</td></tr>
+                        <tr><td><strong>이자 비용</strong></td><td>$1,600~$2,400</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🤝 비교 분석</h3>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>지분 투자의 장점</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>✅ 현금 흐름 압박 없음</li>
+                            <li>✅ 초기 손실 시 유연</li>
+                            <li>✅ 장기 수익 공유</li>
+                            <li>✅ 투자자와의 관계 강화</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>지분 투자의 단점</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>⚠️ 경영 지분율 희석</li>
+                            <li>⚠️ 의사결정에 투자자 의견 반영</li>
+                            <li>⚠️ 장기 지분 관리 필요</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>대출의 장점</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>✅ 100% 경영권 유지</li>
+                            <li>✅ 이자는 세금 공제</li>
+                            <li>✅ 지분 희석 없음</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>대출의 단점</h3>
+                        <ul style="font-size: 14px; margin: 10px 0;">
+                            <li>⚠️ 고정 월 상환 압박</li>
+                            <li>⚠️ 초기 손실 시 어려움</li>
+                            <li>⚠️ 조지아에서 외국인 대출 어려움</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>🎯 권장 구조</h4>
+                <p>조지아 은행 대출의 어려움을 고려하면 <strong>지분 투자 (25%)</strong> 또는 <strong>하이브리드 (15% 지분 + 소액 대출)</strong>가 가장 현실적입니다.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 리스크 관리 -->
+    <section class="section" id="risk">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-icon">⚠️</div>
+                <h2>제11장. 리스크 관리</h2>
+                <p>예상되는 리스크와 대응 전략입니다.</p>
+            </div>
+            
+            <div class="content-block">
+                <h3>📊 리스크 매트릭스</h3>
+                
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>리스크</th>
+                            <th>영향</th>
+                            <th>가능성</th>
+                            <th style="width: 35%;">대응 전략</th>
+                        </tr>
+                        <tr>
+                            <td><strong>1. 저조한 초기 매출</strong></td>
+                            <td>높음</td>
+                            <td>중간</td>
+                            <td>• 사전 마케팅 (Facebook 타겟)<br>• 오픈 프로모션<br>• 안전자금으로 5개월 커버</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. 원재료 가격 급상승</strong></td>
+                            <td>중간</td>
+                            <td>중간</td>
+                            <td>• 다중 공급처 확보<br>• 메뉴 가격 조정<br>• 향신료 사전 비축</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. 배달앱 수수료 인상</strong></td>
+                            <td>높음</td>
+                            <td>높음</td>
+                            <td>• ChiWa 컨셉: 매장 식사 비중 증대<br>• 자체 배달팀 구성<br>• 직접 주문 채널 개발</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. 경쟁사 진입</strong></td>
+                            <td>높음</td>
+                            <td>높음</td>
+                            <td>• 떡 생산 기술 장벽<br>• K-문화 브랜드 강화<br>• 고객 충성도 프로그램</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. 핵심 직원 이탈</strong></td>
+                            <td>높음</td>
+                            <td>중간</td>
+                            <td>• 경쟁력 있는 급여<br>• 기술 이전 및 교육<br>• 성과 보너스</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6. 환율 변동</strong></td>
+                            <td>중간</td>
+                            <td>높음</td>
+                            <td>• 로컬 조달 강화 ($ 지출 최소화)<br>• 환율 차익 반영</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7. 위생/음식 사고</strong></td>
+                            <td>극도</td>
+                            <td>낮음</td>
+                            <td>• 엄격한 위생 관리<br>• 배상 보험 가입<br>• 투명한 조리 공개</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8. 경제 침체</strong></td>
+                            <td>중간</td>
+                            <td>낮음</td>
+                            <td>• 저가격 포지셔닝<br>• 세트 상품 강화<br>• B2B 거래 강화</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>🚪 Exit 전략</h3>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3><span class="card-icon">🎯</span> 성공 시나리오</h3>
+                        <p style="font-size: 14px; margin: 10px 0;">
+                            <strong>Y2~3에 흑자 달성 후</strong><br>
+                            • 2~3호점 확장<br>
+                            • 프랜차이즈 모델 개발<br>
+                            • 배달 자체 인프라 구축<br>
+                            • 투자자 배당 + 재투자
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">⚖️</span> 평범한 시나리오</h3>
+                        <p style="font-size: 14px; margin: 10px 0;">
+                            <strong>안정적이나 제한적 성장</strong><br>
+                            • 1호점만 운영<br>
+                            • 연간 30~40% 성장<br>
+                            • 매년 안정적 배당<br>
+                            • 장기 운영 계획
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3><span class="card-icon">🛑</span> 철수 시나리오</h3>
+                        <p style="font-size: 14px; margin: 10px 0;">
+                            <strong>사업이 부진한 경우</strong><br>
+                            • M12~18 판단 기준<br>
+                            • 자산 매각 (기계, 재고)<br>
+                            • 투자자 손실 배분<br>
+                            • 명예 사퇴
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ 주요 재평가 지점</strong>
+                <ul style="margin-top: 10px;">
+                    <li>M3: 월 평균 주문 수 확인</li>
+                    <li>M6: 손익분기점 진행도 평가</li>
+                    <li>M12: Year 1 성과 종합 평가</li>
+                    <li>M18: 확장 여부 최종 결정</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <div class="nav-buttons">
+        <a href="part1-detail.html" class="prev">← Part 1 돌아가기</a>
+        <a href="index.html" class="home">🏠 홈으로</a>
+    </div>
+    
+    <section class="footer">
+        <h3>K-Street Bites</h3>
+        <p>✝️ Business As Mission</p>
+        <p style="margin-top: 20px; font-size: 14px;">
+            이메일: phs2728@gmail.com | 카카오톡: phs2728<br>
+            © 2024 K-Street Bites. All rights reserved.
+        </p>
+    </section>
+</body>
+</html>
