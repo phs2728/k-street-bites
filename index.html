@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Street Bites - 비즈니스 계획서</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background: #f8f9fa;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .nav-logo span {
+            color: #e94560;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #e94560;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero .highlight {
+            color: #e94560;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .kpi-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #e94560;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #1a1a2e;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #1a1a2e;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Investment Option Cards */
+        .investment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .option-card {
+            background: white;
+            border: 2px solid #e94560;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e94560;
+        }
+
+        .option-item {
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+        }
+
+        .option-label {
+            font-weight: 700;
+            color: #666;
+        }
+
+        .option-value {
+            color: #e94560;
+            font-size: 1.1rem;
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .risk-item {
+            background: white;
+            padding: 1.5rem;
+            border-left: 4px solid #e94560;
+            border-radius: 5px;
+        }
+
+        .risk-title {
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-mitigation {
+            font-size: 0.85rem;
+            color: #e94560;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer h3 {
+            margin-bottom: 1rem;
+            color: #e94560;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .contact-info {
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: inline-block;
+            margin: 0 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .investment-options {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.7rem;
+            }
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 4px solid #e94560;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .highlight-box strong {
+            color: #e94560;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">K-Street <span>Bites</span></div>
+        <ul class="nav-menu">
+            <li><a href="#summary" class="nav-link">요약</a></li>
+            <li><a href="#vision" class="nav-link">비전</a></li>
+            <li><a href="#market" class="nav-link">시장</a></li>
+            <li><a href="#marketing" class="nav-link">마케팅</a></li>
+            <li><a href="#product" class="nav-link">제품</a></li>
+            <li><a href="#operations" class="nav-link">운영</a></li>
+            <li><a href="#finance" class="nav-link">재무</a></li>
+            <li><a href="#investment" class="nav-link">투자</a></li>
+            <li><a href="#risk" class="nav-link">리스크</a></li>
+            <li><a href="#contact" class="nav-link">연락처</a></li>
+            <li><a href="./part1-detail.html" class="nav-link" style="color: #e94560; font-weight: 700; border: 2px solid #e94560; padding: 4px 8px; border-radius: 5px;">📋 Part 1</a></li>
+            <li><a href="./part2-detail.html" class="nav-link" style="color: #f4a261; font-weight: 700; border: 2px solid #f4a261; padding: 4px 8px; border-radius: 5px;">📊 Part 2</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>K-Street <span class="highlight">Bites</span></h1>
+        <p>조지아 트빌리시의 프리미엄 한식 배달 플랫폼</p>
+        <p style="font-size: 0.95rem; opacity: 0.85; margin-bottom: 1.5rem;">✝️ Business As Mission — 탁월한 비즈니스, 선교적 영향</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+            <a href="part1-detail.html" style="padding: 12px 30px; background: #e94560; color: white; text-decoration: none; border-radius: 50px; font-weight: 600; transition: all 0.3s; display: inline-block; font-size: 15px;">📋 Part 1: 전략 보기 →</a>
+            <a href="part2-detail.html" style="padding: 12px 30px; background: #f4a261; color: #1a1a2e; text-decoration: none; border-radius: 50px; font-weight: 600; transition: all 0.3s; display: inline-block; font-size: 15px;">📊 Part 2: 운영 보기 →</a>
+        </div>
+        <div class="kpi-cards">
+            <div class="kpi-card">
+                <div class="kpi-value">₾119.5K</div>
+                <div class="kpi-label">Year 1 예상 매출</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">45%</div>
+                <div class="kpi-label">Gross Margin</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">M8</div>
+                <div class="kpi-label">손익분기점</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">23%</div>
+                <div class="kpi-label">투자자 지분</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Section -->
+    <section id="summary">
+        <h2>📊 경영 요약</h2>
+        <div class="section-grid">
+            <div class="card">
+                <h3>비즈니스 개요</h3>
+                <p>조지아 트빌리시에서 배달 플랫폼(Bolt Food, Wolt)을 통한 한식 도시락 판매. 프리미엄 한식 메뉴와 직접 뽑는 생떡으로 차별화. 초기 투자 $20,000으로 빠른 성장 가능.</p>
+            </div>
+            <div class="card">
+                <h3>타겟 시장</h3>
+                <p>조지아 내 한식 수요층 (한국인, 한식 애호가). Bolt Food, Wolt의 강력한 플랫폼 활용. 월 4,000~5,000명의 활성 배달 고객 대상.</p>
+            </div>
+            <div class="card">
+                <h3>경쟁 우위</h3>
+                <p>직접 뽑는 생떡, 도시락 + 치킨 전략, ChiWa 매장 컨셉으로 배달 플랫폼에서 유일성 확보. 프리미엄 가격 정책 유지 가능.</p>
+            </div>
+            <div class="card">
+                <h3>재무 전망</h3>
+                <p>Year 1: ₾119.5K, Year 2: ₾189.5K, Year 3: ₾257K. M8부터 손익분기점 달성, M12 순이익 ₾15.2K, Year 3 순이익 ₾63.6K.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section id="vision">
+        <h2>🎯 비전 & BAM (Business As Mission)</h2>
+        <div class="section-grid">
+            <div class="card">
+                <h3>BAM 철학</h3>
+                <p>수익 추구와 사회적 책임의 균형. K-Street Bites는 순이익의 5%를 사회 기금으로 기여하여 조지아 사회 발전에 동참합니다.</p>
+            </div>
+            <div class="card">
+                <h3>사회 기금 활용</h3>
+                <p>Year 1 (₾2.2K), Year 2 (₾5.7K), Year 3 (₾9.5K)의 누적 기금으로 지역 사회 프로젝트 지원. 직원 교육, 지역 공동체 발전에 투자.</p>
+            </div>
+            <div class="card">
+                <h3>장기 미션</h3>
+                <p>조지아에서 한식의 대중화와 품질 기준 수립. 프리미엄 한식 브랜드로서 고객 신뢰와 재구매율 극대화.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="market">
+        <h2>🌍 시장 분석</h2>
+        <div class="section-grid">
+            <div class="card">
+                <h3>시장 규모 (TAM)</h3>
+                <p><strong>조지아 배달 시장:</strong> 월 15,000명 활성 사용자 (기존 배달 플랫폼 기준). 한식 시장 점유율은 약 3~5% 추정. TAM ₾54,000~90,000 (월 기준).</p>
+            </div>
+            <div class="card">
+                <h3>SNS 시장 현황</h3>
+                <p><strong>Facebook (82% 점유율):</strong> 조지아 내 식품 관련 주요 광고 채널. Instagram (60% 점유율), TikTok (30% 시작 단계). K-Street Bites는 Facebook 광고로 초기 100명 고객 확보 예상.</p>
+            </div>
+            <div class="card">
+                <h3>경쟁 분석</h3>
+                <p><strong>직접 경쟁:</strong> 3~4개 한식당 (제한적 배달). <strong>간접 경쟁:</strong> 일반 한식당, 중국식 도시락. K-Street Bites의 직접 뽑는 생떡은 유일한 차별화 요소.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketing Section -->
+    <section id="marketing">
+        <h2>📢 마케팅 전략</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>채널</th>
+                    <th>전략</th>
+                    <th>예상 효과</th>
+                    <th>예산 (월)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Facebook</strong></td>
+                    <td>타게팅 광고 (한식 관심층)</td>
+                    <td>월 100~150명 신규 고객</td>
+                    <td>$200~300</td>
+                </tr>
+                <tr>
+                    <td><strong>Bolt Food/Wolt</strong></td>
+                    <td>플랫폼 최적화 + 리뷰 관리</td>
+                    <td>월 150~200명 재구매 고객</td>
+                    <td>$50 (수수료)</td>
+                </tr>
+                <tr>
+                    <td><strong>KakaoTalk</strong></td>
+                    <td>고객 커뮤니티 관리</td>
+                    <td>월 50명 커뮤니티 고객</td>
+                    <td>무료</td>
+                </tr>
+                <tr>
+                    <td><strong>이벤트/프로모션</strong></td>
+                    <td>신메뉴 런칭, 할인 이벤트</td>
+                    <td>월 50~100명 재구매 증가</td>
+                    <td>$100</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="highlight-box">
+            <strong>Facebook 집중 전략:</strong> 조지아 내 식품 배달 채널의 82% 점유율 활용. 월 $200~300 광고 예산으로 초기 인지도 확보.
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="product">
+        <h2>🍜 제품 & 메뉴</h2>
+        <div class="section-grid">
+            <div class="card">
+                <h3>시그니처 메뉴</h3>
+                <p><strong>🍚 한식 도시락:</strong> 밥 + 계란말이 + 야채 + 소스 세트. 직접 뽑는 생떡으로 차별화. 가격: ₾15~18.</p>
+            </div>
+            <div class="card">
+                <h3>생떡 제작 시스템</h3>
+                <p>매일 아침 신선한 생떡을 직접 준비. 기계 자동화 (Rice cake machine)로 24/7 공급 가능. 식재료 원가 ₾0.8~1.0/개.</p>
+            </div>
+            <div class="card">
+                <h3>치킨 전략</h3>
+                <p><strong>도시락 + 치킨 세트:</strong> 프리미엄 가격 (₾22~25)로 객단가 증대. 외부 공급처와의 제휴로 품질 유지.</p>
+            </div>
+            <div class="card">
+                <h3>ChiWa 매장 컨셉</h3>
+                <p>배달 플랫폼 전용 매장. 45m² 소규모 키친. 오프라인 고객 (직접 방문)도 수용 가능. B2B (기업 도시락)로 확장 가능.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Operations Section -->
+    <section id="operations">
+        <h2>🏢 운영 계획</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>상세</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>매장 위치</strong></td>
+                    <td>트빌리시 배달 수요 집중 지역 (Vake-Saburtalo)</td>
+                </tr>
+                <tr>
+                    <td><strong>매장 규모</strong></td>
+                    <td>45m² (키친+ 소량 대기 공간)</td>
+                </tr>
+                <tr>
+                    <td><strong>월 임차료</strong></td>
+                    <td>₾1,000~1,200</td>
+                </tr>
+                <tr>
+                    <td><strong>운영 팀</strong></td>
+                    <td>총 3명 (대표 1 + 주방장 1 + 주방 보조 1)</td>
+                </tr>
+                <tr>
+                    <td><strong>월 인건비</strong></td>
+                    <td>$4,020 (대표 $3,000 + 주방장 평균 $550 + 주방 보조 평균 $450 + 연금 2%)</td>
+                </tr>
+                <tr>
+                    <td><strong>운영 시간</strong></td>
+                    <td>11:00~22:00 (배달 플랫폼 운영 시간)</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="highlight-box">
+            <strong>초기 투자 배분:</strong> $20,000 중 $8,000 장비/인테리어, $7,000 재정, $5,000 운영 자본.
+        </div>
+    </section>
+
+    <!-- Finance Section -->
+    <section id="finance">
+        <h2>💰 재무 계획</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>Year 1</th>
+                    <th>Year 2</th>
+                    <th>Year 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>월 평균 주문</strong></td>
+                    <td>400~500</td>
+                    <td>650~750</td>
+                    <td>900~1,000</td>
+                </tr>
+                <tr>
+                    <td><strong>월 평균 매출</strong></td>
+                    <td>₾9,960</td>
+                    <td>₾15,790</td>
+                    <td>₾21,420</td>
+                </tr>
+                <tr>
+                    <td><strong>연 매출</strong></td>
+                    <td>₾119,520</td>
+                    <td>₾189,480</td>
+                    <td>₾256,640</td>
+                </tr>
+                <tr>
+                    <td><strong>Gross Margin</strong></td>
+                    <td>45% (₾53,784)</td>
+                    <td>45% (₾85,266)</td>
+                    <td>45% (₾115,488)</td>
+                </tr>
+                <tr>
+                    <td><strong>운영비 (연)</strong></td>
+                    <td>₾38,520</td>
+                    <td>₾38,520</td>
+                    <td>₾38,520</td>
+                </tr>
+                <tr>
+                    <td><strong>순이익</strong></td>
+                    <td>₾15,264</td>
+                    <td>₾46,746</td>
+                    <td>₾76,968</td>
+                </tr>
+                <tr>
+                    <td><strong>손익분기점</strong></td>
+                    <td>M8 달성</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="highlight-box">
+            <strong>기본 가정:</strong> 도시락 평균 가격 ₾18, 배송 수수료 15%, 식재료 원가 45%, 고정비 월 ₾3,210.
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section id="investment">
+        <h2>💼 투자 제안</h2>
+        <p style="margin-bottom: 2rem;">두 가지 투자 방식을 제안합니다:</p>
+        
+        <div class="investment-options">
+            <div class="option-card">
+                <div class="option-title">Option A: 대출</div>
+                <div class="option-item">
+                    <div class="option-label">투자 금액</div>
+                    <div class="option-value">$20,000</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">이자율</div>
+                    <div class="option-value">8% (고정)</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">상환 기간</div>
+                    <div class="option-value">24개월</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">총 상환액</div>
+                    <div class="option-value">$21,968</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">상환 방식</div>
+                    <div class="option-value">6개월 유예 후 월 $1,176</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">장점</div>
+                    <div class="option-value">고정 수익 보장, 위험 최소화</div>
+                </div>
+            </div>
+
+            <div class="option-card">
+                <div class="option-title">Option B: 지분 투자</div>
+                <div class="option-item">
+                    <div class="option-label">투자 금액</div>
+                    <div class="option-value">$20,000</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">지분율</div>
+                    <div class="option-value">23%</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">배당율</div>
+                    <div class="option-value">순이익의 25% 배분</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">Year 3 기대 배당</div>
+                    <div class="option-value">₾19,242 (~$6,081)</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">환매 보장</div>
+                    <div class="option-value">24개월 후 최소 $30K</div>
+                </div>
+                <div class="option-item">
+                    <div class="option-label">장점</div>
+                    <div class="option-value">배당+성장성, IE→LLC 세제혜택</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>Option B 특전:</strong> Georgian IE (개인 사업자) 3년 후 LLC 전환 시 세제 혜택. Year 3 예상 순이익 ₾76,968 중 23% 지분 가치 ₾17,703 + 배당 ₾19,242 = 총 ₾36,945 (투자 수익률 184.7%).
+        </div>
+    </section>
+
+    <!-- Risk Section -->
+    <section id="risk">
+        <h2>⚠️ 리스크 & 대응</h2>
+        <div class="risk-matrix">
+            <div class="risk-item">
+                <div class="risk-title">시장 경쟁</div>
+                <div class="risk-description">타 한식당 진입 가능성</div>
+                <div class="risk-mitigation">✓ 직접 뽑는 생떡 기술 심화, 고객 충성도 관리</div>
+            </div>
+            <div class="risk-item">
+                <div class="risk-title">배달 플랫폼 수수료</div>
+                <div class="risk-description">수수료 인상 시 수익성 악화</div>
+                <div class="risk-mitigation">✓ 직접 주문 앱 개발, 매장 식사 비중 확대, 다중 플랫폼 운영</div>
+            </div>
+            <div class="risk-item">
+                <div class="risk-title">공급망 단절</div>
+                <div class="risk-description">식재료 수급 불안정</div>
+                <div class="risk-mitigation">✓ 국내/국외 다중 공급처 확보</div>
+            </div>
+            <div class="risk-item">
+                <div class="risk-title">팀 이탈</div>
+                <div class="risk-description">주방장/주방 보조 이직</div>
+                <div class="risk-mitigation">✓ 시장 대비 25% 우대 임금 + 복리후생 + BAM 정신</div>
+            </div>
+            <div class="risk-item">
+                <div class="risk-title">정규화 요구</div>
+                <div class="risk-description">조지아 정부 규제 강화</div>
+                <div class="risk-mitigation">✓ IE→LLC 전환으로 합법적 법인화</div>
+            </div>
+            <div class="risk-item">
+                <div class="risk-title">환율 변동</div>
+                <div class="risk-description">USD 약세 시 원가 상승</div>
+                <div class="risk-mitigation">✓ 가격 조정 및 마진율 재조정</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <footer id="contact">
+        <h3>📞 연락처</h3>
+        <p>K-Street Bites</p>
+        <p>조지아 트빌리시</p>
+        <div class="contact-info">
+            <div class="contact-item">📧 Email</div>
+            <div class="contact-item">📱 KakaoTalk</div>
+            <div class="contact-item">🌍 Website</div>
+        </div>
+        <hr style="margin: 2rem 0; opacity: 0.3;">
+        <p style="font-size: 0.9rem; opacity: 0.8;">© 2026 K-Street Bites. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Navigation scroll detection
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                // Part 1과 Part 2 링크는 기본 동작 허용 (외부 페이지)
+                if (href.includes('part') || !href.startsWith('#')) {
+                    return; // 기본 동작 실행
+                }
+                e.preventDefault();
+                const targetId = href.slice(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
