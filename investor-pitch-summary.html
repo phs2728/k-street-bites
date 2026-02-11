@@ -1,0 +1,1312 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Street Bites - 투자자용 사업계획서</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --gold: #f4a261;
+            --light: #f8f9fa;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--light);
+            color: var(--primary);
+            line-height: 1.6;
+        }
+        
+        /* 인쇄/PDF 최적화 */
+        @media print {
+            body { background: white; }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+        }
+        
+        /* 페이지 컨테이너 */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 20px;
+            padding: 15mm;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* 헤더 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: #666;
+            text-align: right;
+        }
+        
+        /* 섹션 타이틀 */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent2);
+        }
+        
+        .section-title h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        /* 핵심 지표 카드 */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .kpi-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .kpi-card.accent {
+            background: linear-gradient(135deg, var(--accent), #c23a51);
+        }
+        
+        .kpi-card.gold {
+            background: linear-gradient(135deg, var(--gold), #e76f51);
+        }
+        
+        .kpi-card.success {
+            background: linear-gradient(135deg, var(--success), #27ae60);
+        }
+        
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 900;
+        }
+        
+        .kpi-label {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+        
+        /* 차트 컨테이너 */
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .chart-box {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+        }
+        
+        .chart-box h3 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .chart-box canvas {
+            max-height: 180px;
+        }
+        
+        /* 테이블 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 11px;
+        }
+        
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .data-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .data-table .highlight {
+            background: #fff3cd;
+            font-weight: 600;
+        }
+        
+        /* 인포그래픽 요소 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-card {
+            background: white;
+            border: 2px solid var(--accent2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .info-card h4 {
+            color: var(--accent);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .info-card p {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        /* USP 배지 */
+        .usp-container {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .usp-badge {
+            background: linear-gradient(135deg, var(--accent), #c23a51);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* 타임라인 */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent2);
+        }
+        
+        .timeline-item {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .timeline-content h4 {
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        .timeline-content p {
+            font-size: 10px;
+            color: #666;
+        }
+        
+        /* 투자 요약 박스 */
+        .investment-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .investment-box h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .investment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .investment-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        
+        .investment-item .value {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+        
+        .investment-item .label {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        /* BAM 섹션 */
+        .bam-section {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .bam-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .bam-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+        }
+        
+        .bam-item h5 {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        
+        .bam-item p {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+        
+        /* 리스크 매트릭스 */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: 30px repeat(5, 1fr);
+            grid-template-rows: repeat(5, 40px) 30px;
+            gap: 2px;
+            margin: 15px auto;
+            max-width: 400px;
+        }
+        
+        .risk-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            border-radius: 4px;
+        }
+        
+        .risk-green { background: #d4edda; }
+        .risk-yellow { background: #fff3cd; }
+        .risk-orange { background: #ffe0b2; }
+        .risk-red { background: #f8d7da; }
+        
+        /* 푸터 */
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #666;
+        }
+        
+        /* 진행 바 */
+        .progress-bar {
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        /* 2열 레이아웃 */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        /* SWOT 그리드 */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .swot-box {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+        
+        .swot-s { background: #d4edda; border-left: 4px solid #28a745; }
+        .swot-w { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .swot-o { background: #cce5ff; border-left: 4px solid #007bff; }
+        .swot-t { background: #fff3cd; border-left: 4px solid #ffc107; }
+        
+        .swot-box h5 {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        
+        .swot-box ul {
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 페이지 1: 한 페이지 요약 (Executive Summary) -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page1">
+        <div class="header">
+            <div>
+                <div class="logo">K-Street <span>Bites</span></div>
+                <div style="font-size: 11px; color: #666; margin-top: 5px;">조지아 트빌리시 한국 분식 배달 + 매장 하이브리드</div>
+            </div>
+            <div class="tagline">
+                <strong>Business As Mission</strong><br>
+                탁월한 비즈니스가 곧 최고의 선교<br>
+                <span style="color: var(--accent);">2026년 2월</span>
+            </div>
+        </div>
+        
+        <!-- 핵심 USP -->
+        <div class="usp-container">
+            <div class="usp-badge">🍱 도시락 + 🍗 치킨 전략</div>
+            <div class="usp-badge">🍷 치와(ChiWa) 매장 컨셉</div>
+            <div class="usp-badge">🍡 직접 뽑는 생떡</div>
+            <div class="usp-badge">✝️ BAM 사명 기반</div>
+        </div>
+        
+        <!-- 핵심 KPI -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value">$20K</div>
+                <div class="kpi-label">총 투자금</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-value">$12.2K</div>
+                <div class="kpi-label">월 BEP</div>
+            </div>
+            <div class="kpi-card gold">
+                <div class="kpi-value">54건/일</div>
+                <div class="kpi-label">BEP 주문수</div>
+            </div>
+            <div class="kpi-card success">
+                <div class="kpi-value">~20개월</div>
+                <div class="kpi-label">투자 회수</div>
+            </div>
+        </div>
+        
+        <!-- 투자금 배분 + 매출 차트 -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3>📊 투자금 배분 (20,000 USD)</h3>
+                <canvas id="investmentChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>📈 3년 매출 성장 전망</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 시장 기회 -->
+        <div class="section-title">
+            <div class="section-icon">📍</div>
+            <h2>시장 기회 — 조지아 트빌리시</h2>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>🌍 GDP 성장률</h4>
+                <div style="font-size: 24px; font-weight: 900; color: var(--success);">5.5%</div>
+                <p>2026년 전망 (ADB)</p>
+            </div>
+            <div class="info-card">
+                <h4>👥 타겟 인구</h4>
+                <div style="font-size: 24px; font-weight: 900; color: var(--accent);">327K</div>
+                <p>18~35세 젊은 층</p>
+            </div>
+            <div class="info-card">
+                <h4>🎵 K-Culture 팬</h4>
+                <div style="font-size: 24px; font-weight: 900; color: var(--gold);">50K+</div>
+                <p>K-Pop/K-Drama 팬층</p>
+            </div>
+        </div>
+        
+        <!-- 3년 재무 요약 -->
+        <div class="section-title">
+            <div class="section-icon">💰</div>
+            <h2>3년 재무 전망</h2>
+        </div>
+        
+        <table class="data-table">
+            <tr>
+                <th>항목</th>
+                <th style="text-align: right;">Year 1</th>
+                <th style="text-align: right;">Year 2</th>
+                <th style="text-align: right;">Year 3</th>
+            </tr>
+            <tr>
+                <td><strong>매출액</strong></td>
+                <td style="text-align: right;">$119,556</td>
+                <td style="text-align: right;">$189,540</td>
+                <td style="text-align: right;">$257,040</td>
+            </tr>
+            <tr>
+                <td>매출총이익</td>
+                <td style="text-align: right;">$57,387</td>
+                <td style="text-align: right;">$97,065</td>
+                <td style="text-align: right;">$136,731</td>
+            </tr>
+            <tr>
+                <td>영업이익</td>
+                <td style="text-align: right;">($2,997)</td>
+                <td style="text-align: right;">$40,089</td>
+                <td style="text-align: right;">$79,807</td>
+            </tr>
+            <tr class="highlight">
+                <td><strong>순이익</strong></td>
+                <td style="text-align: right;"><strong>($4,192)</strong></td>
+                <td style="text-align: right;"><strong>$38,184</strong></td>
+                <td style="text-align: right;"><strong>$77,237</strong></td>
+            </tr>
+            <tr>
+                <td>순이익률</td>
+                <td style="text-align: right;">-3.5%</td>
+                <td style="text-align: right;">20.1%</td>
+                <td style="text-align: right;">30.0%</td>
+            </tr>
+        </table>
+        
+        <!-- 투자 제안 박스 -->
+        <div class="investment-box">
+            <h3>💼 투자 제안 요약</h3>
+            <div class="investment-grid">
+                <div class="investment-item">
+                    <div class="value">$20,000</div>
+                    <div class="label">필요 투자금</div>
+                </div>
+                <div class="investment-item">
+                    <div class="value">Y2 190%</div>
+                    <div class="label">Year 2 ROI</div>
+                </div>
+                <div class="investment-item">
+                    <div class="value">~20개월</div>
+                    <div class="label">투자금 회수</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; font-size: 11px; text-align: center; opacity: 0.9;">
+                ⚠️ Y1은 보수적 소액 적자(-$4,192) — 안전자금 $10,000이 흡수. Y2부터 본격 수익화.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div>K-Street Bites | Business As Mission</div>
+            <div>페이지 1 / 4</div>
+            <div>문서 버전 v3.0 | 2026년 2월</div>
+        </div>
+    </div>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 페이지 2: 시장 분석 & 경쟁력 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="page page-break" id="page2">
+        <div class="header">
+            <div class="logo">K-Street <span>Bites</span></div>
+            <div class="tagline">시장 분석 & 경쟁력</div>
+        </div>
+        
+        <!-- SWOT 분석 -->
+        <div class="section-title">
+            <div class="section-icon">🎯</div>
+            <h2>SWOT 분석</h2>
+        </div>
+        
+        <div class="swot-grid">
+            <div class="swot-box swot-s">
+                <h5>💪 강점 (Strengths)</h5>
+                <ul>
+                    <li>자체 떡 생산 (가래떡 기계 보유)</li>
+                    <li>창업자 외식 경력 (터키 경험)</li>
+                    <li>BAM 사명 — 포기하지 않는 동기</li>
+                    <li>20,000 USD 안정적 자금</li>
+                </ul>
+            </div>
+            <div class="swot-box swot-w">
+                <h5>⚠️ 약점 (Weaknesses)</h5>
+                <ul>
+                    <li>초기 브랜드 인지도 부족</li>
+                    <li>조지아 현지 경험 부족</li>
+                    <li>1인 경영 체제 리스크</li>
+                </ul>
+            </div>
+            <div class="swot-box swot-o">
+                <h5>🚀 기회 (Opportunities)</h5>
+                <ul>
+                    <li>K-Culture 인기 급상승</li>
+                    <li>조지아 경제 성장 (GDP 5%+)</li>
+                    <li>IE 1% 세율 혜택</li>
+                    <li>미전도 지역 — BAM 전략적 가치</li>
+                </ul>
+            </div>
+            <div class="swot-box swot-t">
+                <h5>🔥 위협 (Threats)</h5>
+                <ul>
+                    <li>원재료 가격 변동 (환율)</li>
+                    <li>배달 플랫폼 수수료 인상</li>
+                    <li>경쟁사 진입 증가</li>
+                    <li>GEL 환율 급변동</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- TAM/SAM/SOM -->
+        <div class="section-title">
+            <div class="section-icon">📊</div>
+            <h2>시장 규모 (TAM / SAM / SOM)</h2>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3>시장 규모 피라미드</h3>
+                <canvas id="marketChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Porter's 5 Forces</h3>
+                <canvas id="porterChart"></canvas>
+            </div>
+        </div>
+        
+        <table class="data-table">
+            <tr>
+                <th>시장</th>
+                <th>산출 근거</th>
+                <th style="text-align: right;">규모</th>
+            </tr>
+            <tr>
+                <td><strong>TAM</strong> (전체 시장)</td>
+                <td>트빌리시 외식 시장</td>
+                <td style="text-align: right;">~$94M</td>
+            </tr>
+            <tr>
+                <td><strong>SAM</strong> (유효 시장)</td>
+                <td>배달 + 매장 × 아시안/한식 선호</td>
+                <td style="text-align: right;">~$2.8M</td>
+            </tr>
+            <tr class="highlight">
+                <td><strong>SOM</strong> (목표 시장)</td>
+                <td>1차년도 현실적 점유율 3~5%</td>
+                <td style="text-align: right;"><strong>$84K~$145K</strong></td>
+            </tr>
+        </table>
+        
+        <!-- VRIO 분석 -->
+        <div class="section-title">
+            <div class="section-icon">🏆</div>
+            <h2>VRIO 분석 — 핵심 역량</h2>
+        </div>
+        
+        <table class="data-table">
+            <tr>
+                <th>역량/자원</th>
+                <th style="text-align: center;">V</th>
+                <th style="text-align: center;">R</th>
+                <th style="text-align: center;">I</th>
+                <th style="text-align: center;">O</th>
+                <th>경쟁우위</th>
+            </tr>
+            <tr class="highlight">
+                <td><strong>생떡 직접 제조 기술</strong></td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td><strong>지속적 경쟁우위</strong></td>
+            </tr>
+            <tr class="highlight">
+                <td><strong>BAM 사명 기반 동기</strong></td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td><strong>지속적 경쟁우위</strong></td>
+            </tr>
+            <tr>
+                <td>창업자 외식 경력</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">—</td>
+                <td>잠재 우위</td>
+            </tr>
+            <tr>
+                <td>K-Food 브랜딩</td>
+                <td style="text-align: center;">✅</td>
+                <td style="text-align: center;">—</td>
+                <td style="text-align: center;">—</td>
+                <td style="text-align: center;">—</td>
+                <td>경쟁 균등</td>
+            </tr>
+        </table>
+        
+        <!-- 고객 페르소나 -->
+        <div class="section-title">
+            <div class="section-icon">👥</div>
+            <h2>타겟 고객 페르소나</h2>
+        </div>
+        
+        <div class="info-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="info-card">
+                <h4>🎵 니노 (Nino)</h4>
+                <p><strong>22세 여성</strong><br>K-Pop 팬, 대학생<br>주문: 주 1~2회<br>단가: 25 GEL</p>
+            </div>
+            <div class="info-card">
+                <h4>🍽️ 기오르기</h4>
+                <p><strong>32세 남성</strong><br>IT 직장인<br>주문: 주 1회<br>단가: 30 GEL</p>
+            </div>
+            <div class="info-card">
+                <h4>🌍 알렉스</h4>
+                <p><strong>28세</strong><br>디지털 노마드<br>주문: 주 2~3회<br>단가: 20 GEL</p>
+            </div>
+            <div class="info-card">
+                <h4>☕ 타마르 (B2B)</h4>
+                <p><strong>카페 오너</strong><br>떡 납품 거래<br>주문: 주 2회<br>단가: 50~100 GEL</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div>K-Street Bites | Business As Mission</div>
+            <div>페이지 2 / 4</div>
+            <div>문서 버전 v3.0 | 2026년 2월</div>
+        </div>
+    </div>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 페이지 3: 재무 계획 상세 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="page page-break" id="page3">
+        <div class="header">
+            <div class="logo">K-Street <span>Bites</span></div>
+            <div class="tagline">재무 계획 & 투자 분석</div>
+        </div>
+        
+        <!-- 초기 투자 계획 -->
+        <div class="section-title">
+            <div class="section-icon">💵</div>
+            <h2>초기 투자 계획 (CAPEX) — 20,000 USD</h2>
+        </div>
+        
+        <div class="two-col">
+            <div>
+                <h4 style="color: var(--accent); margin-bottom: 10px;">시설 투자 (최소화) ~$10,000</h4>
+                <table class="data-table">
+                    <tr><td>사업자 등록/허가</td><td style="text-align: right;">$200</td></tr>
+                    <tr><td>임대 (렌트+보증금)</td><td style="text-align: right;">$2,875</td></tr>
+                    <tr><td>주방 설비 (추가분)</td><td style="text-align: right;">$1,500</td></tr>
+                    <tr><td>인테리어 (최소)</td><td style="text-align: right;">$500</td></tr>
+                    <tr><td>초기 재료 구매</td><td style="text-align: right;">$2,000</td></tr>
+                    <tr><td>마케팅/오픈 이벤트</td><td style="text-align: right;">$2,000</td></tr>
+                    <tr><td>POS/IT 장비</td><td style="text-align: right;">$800</td></tr>
+                    <tr><td>시설 예비비</td><td style="text-align: right;">$1,000</td></tr>
+                </table>
+            </div>
+            <div>
+                <h4 style="color: var(--success); margin-bottom: 10px;">운영 안전자금 $10,000 ⚠️</h4>
+                <div style="background: #d4edda; padding: 15px; border-radius: 10px; font-size: 11px;">
+                    <p style="font-weight: 700; color: #155724; margin-bottom: 10px;">
+                        🎯 목표: 안 쓰는 것!
+                    </p>
+                    <ul style="margin-left: 15px; color: #155724;">
+                        <li>비상 운영 자금: $8,000</li>
+                        <li>긴급 예비금: $1,000</li>
+                        <li>BAM 초기 기금: $1,000</li>
+                    </ul>
+                    <p style="margin-top: 10px; color: #155724;">
+                        이 돈은 "쓸 돈"이 아니라 <strong>"보험"</strong>입니다.<br>
+                        매출로 운영하고, 안전자금은 손대지 않습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 월간 운영비 -->
+        <div class="section-title">
+            <div class="section-icon">📆</div>
+            <h2>월간 운영비 (OPEX) — $10,693/월</h2>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-box">
+                <h3>월 운영비 구성</h3>
+                <canvas id="opexChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>BEP 분석</h3>
+                <div style="padding: 15px;">
+                    <div style="font-size: 12px; margin-bottom: 10px;">
+                        <strong>월 BEP 매출:</strong> <span style="color: var(--accent); font-size: 20px; font-weight: 900;">$12,209</span>
+                    </div>
+                    <div style="font-size: 11px; margin-bottom: 8px;">
+                        • 월 고정비: $6,593<br>
+                        • 공헌이익률: 54% (하이브리드)<br>
+                        • 일 BEP: 54건 (배달 42 + 매장 12)
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;">BEP 달성 예상: 4~5개월</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 수익성 분석 -->
+        <div class="section-title">
+            <div class="section-icon">📈</div>
+            <h2>투자 타당성 분석</h2>
+        </div>
+        
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value">-21%</div>
+                <div class="kpi-label">Year 1 ROI</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-value">190%</div>
+                <div class="kpi-label">Year 2 ROI</div>
+            </div>
+            <div class="kpi-card gold">
+                <div class="kpi-value">48%</div>
+                <div class="kpi-label">공헌이익률</div>
+            </div>
+            <div class="kpi-card success">
+                <div class="kpi-value">~20개월</div>
+                <div class="kpi-label">Payback</div>
+            </div>
+        </div>
+        
+        <!-- 민감도 분석 -->
+        <div class="section-title">
+            <div class="section-icon">⚖️</div>
+            <h2>민감도 분석 — 시나리오별 전망</h2>
+        </div>
+        
+        <table class="data-table">
+            <tr>
+                <th>시나리오</th>
+                <th>매출 변동</th>
+                <th>원가 변동</th>
+                <th style="text-align: right;">Year 1 순이익</th>
+                <th style="text-align: right;">Year 2 순이익</th>
+                <th style="text-align: right;">Y3 순이익</th>
+            </tr>
+            <tr style="background: #d4edda;">
+                <td>🌟 낙관 (Best)</td>
+                <td>+20%</td>
+                <td>-5%</td>
+                <td style="text-align: right;">$18,500</td>
+                <td style="text-align: right;">$62,000</td>
+                <td style="text-align: right;">$105,000</td>
+            </tr>
+            <tr class="highlight">
+                <td>📊 기본 (Base)</td>
+                <td>0%</td>
+                <td>0%</td>
+                <td style="text-align: right;">($4,192)</td>
+                <td style="text-align: right;">$38,184</td>
+                <td style="text-align: right;">$77,237</td>
+            </tr>
+            <tr style="background: #fff3cd;">
+                <td>⚠️ 보수 (Worst)</td>
+                <td>-30%</td>
+                <td>+15%</td>
+                <td style="text-align: right;">($28,000)</td>
+                <td style="text-align: right;">$5,200</td>
+                <td style="text-align: right;">$32,000</td>
+            </tr>
+        </table>
+        
+        <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; font-size: 11px; margin-top: 15px;">
+            <strong>💡 결론:</strong> 기본 시나리오에서 Y1은 소액 적자이지만 안전자금 $10,000이 완전 흡수. 
+            Y2부터 순이익 $38K+ 달성으로 <strong>보수적이지만 실현 가능한 계획</strong>.
+        </div>
+        
+        <div class="footer">
+            <div>K-Street Bites | Business As Mission</div>
+            <div>페이지 3 / 4</div>
+            <div>문서 버전 v3.0 | 2026년 2월</div>
+        </div>
+    </div>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 페이지 4: 성장 로드맵 & BAM & 리스크 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="page page-break" id="page4">
+        <div class="header">
+            <div class="logo">K-Street <span>Bites</span></div>
+            <div class="tagline">운영 모델 & 성장 전략 & BAM & 리스크</div>
+        </div>
+        
+        <!-- 매장 식사(Dine-in) 전략 -->
+        <div class="section-title">
+            <div class="section-icon">🍷</div>
+            <h2>매장 식사 전략 — ChiWa(치킨+와인) 컨셉</h2>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>🪑 좌석</h4>
+                <div style="font-size: 20px; font-weight: 900; color: var(--accent);">4테이블 8석</div>
+                <p>45~60 m² 공간</p>
+            </div>
+            <div class="info-card">
+                <h4>🍷 ChiWa A</h4>
+                <div style="font-size: 20px; font-weight: 900; color: var(--gold);">35 GEL</div>
+                <p>반마리+와인+반찬</p>
+            </div>
+            <div class="info-card">
+                <h4>📊 일 매장 매출</h4>
+                <div style="font-size: 20px; font-weight: 900; color: var(--success);">~600 GEL</div>
+                <p>월 ~$5,891</p>
+            </div>
+        </div>
+        
+        <div style="background: #e8f5e9; padding: 10px 15px; border-radius: 8px; font-size: 11px; margin-top: 10px;">
+            <strong>✅ 핵심 장점:</strong> 조지아는 <strong>주류 판매 별도 면허 불요!</strong> 와인 원가 3~5 GEL → 마진 극대화. 배달 수수료(20~25%) 없어 <strong>변동비율 52%→46%</strong>, 공헌이익률 <strong>48%→54%</strong>
+        </div>
+        
+        <!-- 식당 허가 절차 -->
+        <div class="section-title" style="margin-top: 15px;">
+            <div class="section-icon">📋</div>
+            <h2>조지아 식당 허가 — 별도 "식당 면허" 없음!</h2>
+        </div>
+        
+        <table class="data-table" style="font-size: 10px;">
+            <tr><th>단계</th><th>절차</th><th>소요/비용</th><th>비고</th></tr>
+            <tr><td>1</td><td><strong>IE(개인사업자) 등록</strong></td><td>1일 / 무료</td><td>Revenue Service, 세금 1%</td></tr>
+            <tr><td>2</td><td><strong>NACE 코드 56.10</strong></td><td>1~2일 / ~50 GEL</td><td>Public Registry</td></tr>
+            <tr class="highlight"><td>3</td><td><strong>NFA 식품사업자 등록</strong></td><td>3~7일 / 무료</td><td>핵심! 국가식품청</td></tr>
+            <tr><td>4</td><td><strong>위생/HACCP 기준</strong></td><td>상시</td><td>기록 유지 의무</td></tr>
+            <tr><td>5</td><td><strong>주류 등록</strong></td><td>-</td><td>🍷 별도 면허 불요!</td></tr>
+        </table>
+        
+        <div style="background: #fff3cd; padding: 8px 12px; border-radius: 8px; font-size: 10px; margin-top: 8px;">
+            ⚠️ 법적 근거: 「식품/사료 안전, 수의 및 식물 보호법」(Law No. 6155, 2012) | 미등록 영업 시 500 GEL 벌금 + 정지
+        </div>
+        
+        <!-- 성장 로드맵 (데이터 기반 트리거) -->
+        <div class="section-title">
+            <div class="section-icon">🚀</div>
+            <h2>데이터 기반 성장 로드맵</h2>
+        </div>
+        
+        <div style="background: #e3f2fd; padding: 8px 12px; border-radius: 8px; font-size: 10px; margin-bottom: 12px;">
+            <strong>📊 핵심 원칙:</strong> 배달이 메인(70%), 매장은 보너스(20%). <strong>숫자가 "확장하라"고 말할 때만 움직인다.</strong>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot">0</div>
+                <div class="timeline-content">
+                    <h4>Phase 0: 진입 (M1~6)</h4>
+                    <p>테이블 4개(8석) | 배달 집중<br>BEP $12,209 돌파 목표<br>
+                    <span style="color: var(--accent); font-size: 10px;">▶ 트리거: 배달 42건/일 × 30일, 흑자 전환</span></p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <div class="timeline-content">
+                    <h4>Phase 1: 안정 (M7~12)</h4>
+                    <p>월 $18,000 | 매장 확장 검토<br>
+                    <span style="color: var(--gold); font-size: 10px;">▶ 트리거: 좌석 점유율 80%+ & 턴어웨이 5명+/일 & 순이익 $2K+/월</span></p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">2</div>
+                <div class="timeline-content">
+                    <h4>Phase 2: 성장 (M13~24)</h4>
+                    <p>8석→16~20석 | +$2~3K 투자 (1개월 회수)<br>월 $25,000 | 홀 직원 +1명<br>
+                    <span style="color: var(--accent); font-size: 10px;">▶ 트리거: 총 매출 $25K × 3개월 & 누적이익 $30K+</span></p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <div class="timeline-content">
+                    <h4>Phase 3: 확장 (M25~36)</h4>
+                    <p>30~40석 or 2호점 | 월 $40,000+<br>BAM 모델 복제 = 선교 확산</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BAM 섹션 -->
+        <div class="bam-section">
+            <h3 style="font-size: 14px;">✝️ Business As Mission — 비즈니스 선교 전략</h3>
+            <p style="font-size: 11px; opacity: 0.9; margin-top: 8px;">
+                "대충 하는 비즈니스는 BAM이 아니다. <strong>탁월한 비즈니스가 곧 최고의 설교다.</strong>"
+            </p>
+            <div class="bam-grid">
+                <div class="bam-item">
+                    <h5>💪 탁월함</h5>
+                    <p>선교이기에 더 탁월하게</p>
+                </div>
+                <div class="bam-item">
+                    <h5>💰 지속가능성</h5>
+                    <p>흑자 경영이 사명의 전제</p>
+                </div>
+                <div class="bam-item">
+                    <h5>🔗 통합성</h5>
+                    <p>사업 자체가 선교</p>
+                </div>
+                <div class="bam-item">
+                    <h5>🌱 변혁</h5>
+                    <p>개인·지역사회 변화</p>
+                </div>
+            </div>
+            <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 10px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 18px;">💵</div>
+                    <div>Financial</div>
+                    <div style="opacity: 0.8;">순이익, ROI</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 18px;">👥</div>
+                    <div>Social</div>
+                    <div style="opacity: 0.8;">공정임금, 고용</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 18px;">🌍</div>
+                    <div>Environmental</div>
+                    <div style="opacity: 0.8;">친환경 포장</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 18px;">✨</div>
+                    <div>Spiritual</div>
+                    <div style="opacity: 0.8;">관계, 삶의 변화</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 리스크 관리 -->
+        <div class="section-title">
+            <div class="section-icon">⚠️</div>
+            <h2>Top 5 리스크 & 대응 전략</h2>
+        </div>
+        
+        <table class="data-table">
+            <tr>
+                <th>리스크</th>
+                <th>확률×영향</th>
+                <th>예방 전략</th>
+                <th>대응 전략</th>
+            </tr>
+            <tr style="background: #f8d7da;">
+                <td>🔴 식품안전사고</td>
+                <td>Critical</td>
+                <td>HACCP 기반 위생관리</td>
+                <td>영업중단→제품회수→원인조사</td>
+            </tr>
+            <tr style="background: #ffe0b2;">
+                <td>🟠 BEP 미달 장기화</td>
+                <td>High</td>
+                <td>매주 매출 모니터링</td>
+                <td>비필수 지출 동결→프로모션 강화</td>
+            </tr>
+            <tr style="background: #ffe0b2;">
+                <td>🟠 핵심인력 이탈</td>
+                <td>High</td>
+                <td>공정 임금, 교차 교육</td>
+                <td>대표 대체→긴급 채용</td>
+            </tr>
+            <tr style="background: #fff3cd;">
+                <td>🟡 환율 변동</td>
+                <td>Medium</td>
+                <td>현지 재료 70%+ 유지</td>
+                <td>메뉴 가격 5% 조정</td>
+            </tr>
+            <tr style="background: #fff3cd;">
+                <td>🟡 플랫폼 수수료 인상</td>
+                <td>Medium</td>
+                <td>다중 플랫폼 활용</td>
+                <td>자체 배달 비율 확대</td>
+            </tr>
+        </table>
+        
+        <!-- 투자 옵션 -->
+        <div class="section-title">
+            <div class="section-icon">🤝</div>
+            <h2>투자 옵션 — 대출 vs 지분투자</h2>
+        </div>
+        
+        <div class="two-col">
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border: 2px solid #dee2e6;">
+                <h4 style="margin-bottom: 10px;">Option A: 대출 (빌림)</h4>
+                <p style="font-size: 10px; color: #666;">
+                    • 월 상환: $1,111/월 (18개월)<br>
+                    • 대표 지분: 100%<br>
+                    • 투자자 역할: 채권자<br>
+                    • 세금: IE 1% 유지 가능
+                </p>
+            </div>
+            <div style="background: #d4edda; padding: 15px; border-radius: 10px; border: 2px solid #28a745;">
+                <h4 style="margin-bottom: 10px; color: #155724;">Option B: 지분투자 ⭐ 추천</h4>
+                <p style="font-size: 10px; color: #155724;">
+                    • 월 상환: 없음 (현금흐름 안정)<br>
+                    • 대표 지분: 80% / 투자자 20%<br>
+                    • 투자자 역할: <strong>BAM 동역자</strong><br>
+                    • 투자자 ROI: 3년 315~416%
+                </p>
+            </div>
+        </div>
+        
+        <!-- 연락처 -->
+        <div style="margin-top: 20px; text-align: center; padding: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 15px;">
+            <h3 style="margin-bottom: 10px;">📞 연락처</h3>
+            <p style="font-size: 14px; font-weight: 700;">박흥식 (Heung Sik Park)</p>
+            <p style="font-size: 12px; opacity: 0.9;">세종사이버대 외식창업프랜차이즈 전공 | 터키 외식 창업 경험</p>
+            <p style="font-size: 12px; opacity: 0.9; margin-top: 5px;">치킨마스터·핫도그·커피마스터 과정 수료</p>
+        </div>
+        
+        <div class="footer">
+            <div>K-Street Bites | Business As Mission</div>
+            <div>페이지 4 / 4</div>
+            <div>문서 버전 v3.0 | 2026년 2월</div>
+        </div>
+    </div>
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Chart.js 스크립트 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        // 투자금 배분 차트
+        new Chart(document.getElementById('investmentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['시설투자 (~$10K)', '운영안전자금 ($10K)'],
+                datasets: [{
+                    data: [10000, 10000],
+                    backgroundColor: ['#e94560', '#2ecc71'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                }
+            }
+        });
+        
+        // 매출 성장 차트
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3'],
+                datasets: [
+                    {
+                        label: '매출',
+                        data: [119556, 189540, 257040],
+                        backgroundColor: '#1a1a2e'
+                    },
+                    {
+                        label: '순이익',
+                        data: [-4192, 38184, 77237],
+                        backgroundColor: '#e94560'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        
+        // 시장 규모 차트
+        new Chart(document.getElementById('marketChart'), {
+            type: 'bar',
+            data: {
+                labels: ['TAM', 'SAM', 'SOM'],
+                datasets: [{
+                    label: '시장 규모 (USD)',
+                    data: [94000000, 2800000, 119556],
+                    backgroundColor: ['#1a1a2e', '#e94560', '#f4a261']
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { type: 'logarithmic' }
+                }
+            }
+        });
+        
+        // Porter's 5 Forces 차트
+        new Chart(document.getElementById('porterChart'), {
+            type: 'radar',
+            data: {
+                labels: ['기존 경쟁', '신규 진입', '대체재', '공급자 교섭력', '구매자 교섭력'],
+                datasets: [{
+                    label: '위협 수준',
+                    data: [3, 4, 3, 3, 4],
+                    backgroundColor: 'rgba(233, 69, 96, 0.3)',
+                    borderColor: '#e94560',
+                    pointBackgroundColor: '#e94560'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    r: { min: 0, max: 5 }
+                }
+            }
+        });
+        
+        // 월 운영비 차트
+        new Chart(document.getElementById('opexChart'), {
+            type: 'pie',
+            data: {
+                labels: ['대표급여', '직원급여', '원재료비', '배달수수료', '임대료', '마케팅', '기타'],
+                datasets: [{
+                    data: [3000, 900, 2700, 1200, 1375, 500, 1018],
+                    backgroundColor: ['#1a1a2e', '#16213e', '#e94560', '#f4a261', '#0f3460', '#2ecc71', '#95a5a6']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'right', labels: { font: { size: 9 } } }
+                }
+            }
+        });
+    </script>
+    
+    <!-- 인쇄 버튼 (화면용) -->
+    <div class="no-print" style="text-align: center; padding: 20px;">
+        <button onclick="window.print()" style="
+            padding: 15px 40px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #e94560, #c23a51);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+        ">🖨️ PDF로 저장 (Ctrl+P)</button>
+        <p style="margin-top: 10px; font-size: 12px; color: #666;">
+            인쇄 대화상자에서 "PDF로 저장" 선택
+        </p>
+    </div>
+</body>
+</html>

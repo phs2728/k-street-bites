@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Street Bites - One Page Summary</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --gold: #f4a261;
+            --success: #2ecc71;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f0f0f0;
+        }
+        
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+            .page { box-shadow: none; margin: 0; }
+        }
+        
+        .page {
+            width: 297mm;
+            height: 210mm;
+            margin: 20px auto;
+            padding: 12mm;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr auto;
+            gap: 10px;
+        }
+        
+        /* 헤더 */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+        
+        .logo span { color: var(--accent); }
+        
+        .usp-badges {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .badge {
+            background: var(--accent);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* KPI 행 */
+        .kpi-row {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+        
+        .kpi {
+            background: linear-gradient(135deg, var(--primary), #16213e);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .kpi.accent { background: linear-gradient(135deg, var(--accent), #c23a51); }
+        .kpi.gold { background: linear-gradient(135deg, var(--gold), #e76f51); }
+        .kpi.success { background: linear-gradient(135deg, var(--success), #27ae60); }
+        
+        .kpi-value {
+            font-size: 20px;
+            font-weight: 900;
+        }
+        
+        .kpi-label {
+            font-size: 9px;
+            opacity: 0.9;
+        }
+        
+        /* 섹션 */
+        .section {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+        }
+        
+        .section h3 {
+            font-size: 11px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .section canvas {
+            max-height: 100px;
+        }
+        
+        /* 테이블 */
+        .mini-table {
+            width: 100%;
+            font-size: 9px;
+            border-collapse: collapse;
+        }
+        
+        .mini-table th {
+            background: var(--primary);
+            color: white;
+            padding: 5px;
+            text-align: left;
+        }
+        
+        .mini-table td {
+            padding: 4px 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mini-table tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+        
+        /* 타임라인 */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .timeline-dot {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            margin: 0 auto 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .timeline-item h4 { font-size: 9px; }
+        .timeline-item p { font-size: 8px; color: #666; }
+        
+        /* BAM */
+        .bam-box {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .bam-box h3 {
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+        }
+        
+        .bam-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+        }
+        
+        .bam-item {
+            background: rgba(255,255,255,0.15);
+            padding: 6px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 8px;
+        }
+        
+        .bam-item strong { font-size: 9px; }
+        
+        /* 투자 요약 */
+        .invest-summary {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary), #16213e);
+            color: white;
+            border-radius: 10px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .invest-summary h3 {
+            font-size: 12px;
+        }
+        
+        .invest-items {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .invest-item {
+            text-align: center;
+        }
+        
+        .invest-item .value {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+        
+        .invest-item .label {
+            font-size: 9px;
+            opacity: 0.9;
+        }
+        
+        /* SWOT 미니 */
+        .swot-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            font-size: 8px;
+        }
+        
+        .swot-mini div {
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .swot-s { background: #d4edda; }
+        .swot-w { background: #f8d7da; }
+        .swot-o { background: #cce5ff; }
+        .swot-t { background: #fff3cd; }
+        
+        /* 리스트 */
+        .mini-list {
+            font-size: 9px;
+            padding-left: 15px;
+        }
+        
+        .mini-list li {
+            margin-bottom: 3px;
+        }
+        
+        /* 연락처 */
+        .contact {
+            text-align: right;
+            font-size: 10px;
+        }
+        
+        .contact strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- 헤더 -->
+        <div class="header">
+            <div>
+                <div class="logo">K-Street <span>Bites</span></div>
+                <div style="font-size: 10px; color: #666;">조지아 트빌리시 한국 분식 배달 전문점 | Business As Mission</div>
+            </div>
+            <div class="usp-badges">
+                <div class="badge">🍡 직접 뽑는 생떡</div>
+                <div class="badge">🇰🇷 K-Food 트렌드</div>
+                <div class="badge">✝️ BAM 사명</div>
+            </div>
+            <div class="contact">
+                <strong>박흥식</strong><br>
+                2026년 2월 | v2.2
+            </div>
+        </div>
+        
+        <!-- KPI 행 -->
+        <div class="kpi-row">
+            <div class="kpi">
+                <div class="kpi-value">$20K</div>
+                <div class="kpi-label">총 투자금</div>
+            </div>
+            <div class="kpi accent">
+                <div class="kpi-value">$9.7K</div>
+                <div class="kpi-label">월 BEP</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-value">$145K</div>
+                <div class="kpi-label">Year1 매출</div>
+            </div>
+            <div class="kpi gold">
+                <div class="kpi-value">155%</div>
+                <div class="kpi-label">IRR (3년)</div>
+            </div>
+            <div class="kpi success">
+                <div class="kpi-value">12.5개월</div>
+                <div class="kpi-label">투자회수</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-value">$113K</div>
+                <div class="kpi-label">NPV (12%)</div>
+            </div>
+        </div>
+        
+        <!-- 투자금 배분 -->
+        <div class="section">
+            <h3>💰 투자금 배분</h3>
+            <canvas id="investChart"></canvas>
+            <div style="font-size: 8px; text-align: center; margin-top: 5px; color: #666;">
+                ⚠️ 운영안전자금: 안 쓰는 것이 목표
+            </div>
+        </div>
+        
+        <!-- 3년 매출 -->
+        <div class="section">
+            <h3>📈 3년 재무 전망</h3>
+            <canvas id="revenueChart"></canvas>
+        </div>
+        
+        <!-- 시장 기회 -->
+        <div class="section">
+            <h3>📍 시장 기회</h3>
+            <table class="mini-table">
+                <tr><td>GDP 성장률</td><td style="text-align:right;color:var(--success);font-weight:700;">5.5%</td></tr>
+                <tr><td>타겟 인구 (18~35세)</td><td style="text-align:right;font-weight:700;">327,000명</td></tr>
+                <tr><td>K-Culture 팬</td><td style="text-align:right;font-weight:700;">50,000+</td></tr>
+                <tr><td>배달시장 성장</td><td style="text-align:right;color:var(--success);">+15%/년</td></tr>
+            </table>
+        </div>
+        
+        <!-- SWOT -->
+        <div class="section">
+            <h3>🎯 SWOT 분석</h3>
+            <div class="swot-mini">
+                <div class="swot-s"><strong>S</strong> 자체 떡생산, BAM 사명</div>
+                <div class="swot-w"><strong>W</strong> 현지경험 부족, 1인 경영</div>
+                <div class="swot-o"><strong>O</strong> K-Culture, GDP 5%+</div>
+                <div class="swot-t"><strong>T</strong> 환율변동, 경쟁증가</div>
+            </div>
+        </div>
+        
+        <!-- 월 운영비 -->
+        <div class="section">
+            <h3>📆 월 운영비 $8,500</h3>
+            <canvas id="opexChart"></canvas>
+        </div>
+        
+        <!-- BAM -->
+        <div class="section bam-box">
+            <h3>✝️ BAM - Business As Mission</h3>
+            <div class="bam-grid">
+                <div class="bam-item"><strong>💪 탁월함</strong><br>선교이기에 더</div>
+                <div class="bam-item"><strong>💰 지속가능</strong><br>흑자가 전제</div>
+                <div class="bam-item"><strong>🔗 통합</strong><br>사업=선교</div>
+                <div class="bam-item"><strong>🌱 변혁</strong><br>지역사회 변화</div>
+            </div>
+        </div>
+        
+        <!-- 성장 로드맵 -->
+        <div class="section" style="grid-column: 1 / 3;">
+            <h3>🚀 성장 로드맵</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">1</div>
+                    <h4>진입 (0~6월)</h4>
+                    <p>BEP $9.7K 달성</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">2</div>
+                    <h4>안정 (7~12월)</h4>
+                    <p>월 $12K 매출</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">3</div>
+                    <h4>성장 (13~24월)</h4>
+                    <p>월 $18K 매출</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">4</div>
+                    <h4>확장 (25~36월)</h4>
+                    <p>월 $25K, 복제</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top 리스크 -->
+        <div class="section">
+            <h3>⚠️ Top 리스크</h3>
+            <ul class="mini-list">
+                <li>🔴 식품안전사고 → HACCP</li>
+                <li>🟠 BEP 미달 → 프로모션</li>
+                <li>🟠 인력이탈 → 교차교육</li>
+                <li>🟡 환율변동 → 현지재료 70%</li>
+            </ul>
+        </div>
+        
+        <!-- 투자 요약 -->
+        <div class="invest-summary">
+            <h3>💼 투자 제안</h3>
+            <div class="invest-items">
+                <div class="invest-item">
+                    <div class="value">$20,000</div>
+                    <div class="label">필요 투자금</div>
+                </div>
+                <div class="invest-item">
+                    <div class="value">110%</div>
+                    <div class="label">Year 1 ROI</div>
+                </div>
+                <div class="invest-item">
+                    <div class="value">155%</div>
+                    <div class="label">IRR</div>
+                </div>
+                <div class="invest-item">
+                    <div class="value">12.5개월</div>
+                    <div class="label">Payback</div>
+                </div>
+            </div>
+            <div style="font-size: 10px;">
+                <strong style="color: var(--gold);">추천: 지분투자 (20%)</strong><br>
+                BAM 동역자로 함께
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 투자금 배분
+        new Chart(document.getElementById('investChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['시설 ~$10K', '안전자금 $10K'],
+                datasets: [{ data: [10000, 10000], backgroundColor: ['#e94560', '#2ecc71'], borderWidth: 0 }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 8 } } } } }
+        });
+        
+        // 매출
+        new Chart(document.getElementById('revenueChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Y1', 'Y2', 'Y3'],
+                datasets: [
+                    { label: '매출', data: [145, 212, 280], backgroundColor: '#1a1a2e' },
+                    { label: '순이익', data: [22, 66, 108], backgroundColor: '#e94560' }
+                ]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 8 } } } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'K USD', font: { size: 8 } } } } }
+        });
+        
+        // 운영비
+        new Chart(document.getElementById('opexChart'), {
+            type: 'pie',
+            data: {
+                labels: ['대표급여', '직원', '재료', '임대', '기타'],
+                datasets: [{ data: [3000, 1200, 2000, 1000, 1300], backgroundColor: ['#1a1a2e', '#16213e', '#e94560', '#f4a261', '#95a5a6'] }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'right', labels: { font: { size: 8 } } } } }
+        });
+    </script>
+    
+    <div class="no-print" style="text-align: center; padding: 20px;">
+        <button onclick="window.print()" style="padding: 12px 30px; font-size: 14px; background: var(--accent); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 700;">
+            🖨️ PDF로 저장 (가로 방향)
+        </button>
+        <p style="margin-top: 8px; font-size: 11px; color: #666;">인쇄 설정에서 "가로" 방향 선택</p>
+    </div>
+</body>
+</html>
